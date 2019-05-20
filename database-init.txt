@@ -1,0 +1,7 @@
+// \connect root@localhost
+
+CREATE DATABASE IF NOT EXISTS pwrDB;
+CREATE USER IF NOT EXISTS 'pwruser'@'localhost' IDENTIFIED BY 'pwruser';
+ALTER USER 'pwruser'@'localhost' IDENTIFIED WITH mysql_native_password BY 'pwruser';
+
+GRANT ALL ON pwrDB.* TO 'pwruser'@'localhost';
