@@ -30,4 +30,10 @@ dependencies {
     runtime 'mysql:mysql-connector-java'
     compile 'org.projectlombok:lombok'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
+    
+    // For converting LocalDate to SQL.Date and backward
+    // https://mvnrepository.com/artifact/org.hibernate/hibernate-java8
+    compile group: 'org.hibernate', name: 'hibernate-java8', version: '5.0.12.Final'
+
+
 }
