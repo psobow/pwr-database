@@ -53,7 +53,7 @@ public class Employee
             fetch = FetchType.LAZY,
             mappedBy = "employee"
     )
-    @NotNull private List<WorkStartFinishEvent> WorkStartFinishEvents = new ArrayList<>();
+    @NotNull private List<WorkStartFinishEvent> workStartFinishEvents = new ArrayList<>();
 
     @OneToMany(
             targetEntity = DailyEmployeeReport.class,
@@ -61,5 +61,13 @@ public class Employee
             fetch = FetchType.LAZY,
             mappedBy = "employee"
     )
-    @NotNull private List<DailyEmployeeReport> DailyEmployeeReports = new ArrayList<>();
+    @NotNull private List<DailyEmployeeReport> dailyEmployeeReports = new ArrayList<>();
+
+    @OneToMany(
+            targetEntity = EmployeeAbsent.class,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "employee"
+    )
+    @NotNull private List<EmployeeAbsent> employeeAbsents = new ArrayList<>();
 }
