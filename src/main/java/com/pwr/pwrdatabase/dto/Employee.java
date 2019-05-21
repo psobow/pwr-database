@@ -17,6 +17,8 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @NoArgsConstructor
@@ -40,34 +42,35 @@ public class Employee
     @NotNull private String phoneNumber;
     @NotNull private LocalDate hireDate;
     @NotNull private int currentHolidays;
+    @NotNull private boolean active = true;
 
     // Foreign Keys
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne()
     @JoinColumn(name = "ID_EMPLOYMENT_CONTRACT")
     @NotNull private EmploymentContract employmentContract;
 
     @OneToMany(
             targetEntity = WorkStartFinishEvent.class,
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
             mappedBy = "employee"
     )
+    @LazyCollection(LazyCollectionOption.FALSE)
     @NotNull private List<WorkStartFinishEvent> workStartFinishEvents = new ArrayList<>();
 
     @OneToMany(
             targetEntity = DailyEmployeeReport.class,
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
             mappedBy = "employee"
     )
+    @LazyCollection(LazyCollectionOption.FALSE)
     @NotNull private List<DailyEmployeeReport> dailyEmployeeReports = new ArrayList<>();
 
     @OneToMany(
             targetEntity = EmployeeAbsent.class,
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
             mappedBy = "employee"
     )
+    @LazyCollection(LazyCollectionOption.FALSE)
     @NotNull private List<EmployeeAbsent> employeeAbsents = new ArrayList<>();
 }

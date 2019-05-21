@@ -39,7 +39,6 @@ public class EmployeeAbsentTest
         contract.setShiftBegin(LocalTime.now());
         contract.setShiftEnd(LocalTime.now());
         contract.setQuantityOfFullWorkDaysForOneHoliday(10);
-        contract.setActive(true);
 
         Employee employee = new Employee();
         employee.setFirstName("Patryk");
@@ -61,10 +60,10 @@ public class EmployeeAbsentTest
         long sizeOfAbsentBefore = employeeAbsentDao.count();
 
         // When
+        employmentContractDao.save(contract);
         employeeAbsentDao.save(employeeAbsent);
 
         // Clean up
-        employeeDao.delete(employee.getId()); // deleting both employee and employeeAbsent
         employmentContractDao.delete(contract.getId());
 
         // Then

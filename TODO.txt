@@ -1,0 +1,3 @@
+Przemyśleć fetch = FetchType.EAGER w encjach.
+Gdybym miał to zmienić na LAZY to trzeba mieć na uwadze że wtedy powstaną problemy,
+mianowicie trzeba będzie w jakiś sposób jawnie wysyłać żądania do bazy danych zeby 'dofetchowało' tą kolekcje która jest LAZY

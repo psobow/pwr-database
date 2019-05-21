@@ -29,7 +29,7 @@ public class EmployeeAbsent
     @NotNull private LocalDate absentStartDate;
     @NotNull private int absentDurationInDays;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne()
     @JoinColumn(name = "ID_EMPLOYEE")
     @NotNull private Employee employee;
 }

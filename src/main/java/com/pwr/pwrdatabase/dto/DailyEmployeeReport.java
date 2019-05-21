@@ -34,7 +34,7 @@ public class DailyEmployeeReport
 
     // Foreign Keys
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne()
     @JoinColumn(name = "ID_EMPLOYEE")
     @NotNull private Employee employee;
 }

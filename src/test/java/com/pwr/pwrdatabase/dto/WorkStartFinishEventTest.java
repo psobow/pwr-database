@@ -39,7 +39,6 @@ public class WorkStartFinishEventTest
         contract.setShiftBegin(LocalTime.now());
         contract.setShiftEnd(LocalTime.now());
         contract.setQuantityOfFullWorkDaysForOneHoliday(10);
-        contract.setActive(true);
 
         Employee employee = new Employee();
         employee.setFirstName("Patryk");
@@ -61,20 +60,16 @@ public class WorkStartFinishEventTest
         long sizeOfEventBefore = workStartFinishEventDao.count();
 
         // When
+        employmentContractDao.save(contract);
         workStartFinishEventDao.save(event);
-        long idEvent = event.getId();
 
         // Clean up
-        employeeDao.delete(employee.getId()); // Deleting both new rows inserted to database, Employee and Event. becouse of CascadeType inside Employee entity.
         employmentContractDao.delete(contract.getId());
-
 
         // Then
         long sizeOfContractAfter = employmentContractDao.count();
         long sizeOfEmployeeAfter = employeeDao.count();
         long sizeOfEventAfter = workStartFinishEventDao.count();
-
-        //log.info("New event ID: " + idEvent);
 
         Assert.assertEquals(sizeOfContractBefore, sizeOfContractAfter);
         Assert.assertEquals(sizeOfEmployeeBefore, sizeOfEmployeeAfter);

@@ -32,14 +32,13 @@ public class EmploymentContract
     @NotNull private LocalTime shiftBegin;
     @NotNull private LocalTime shiftEnd;
     @NotNull private int quantityOfFullWorkDaysForOneHoliday;
-    @NotNull private boolean active;
 
     // Foreign Keys
 
     @OneToMany(
             targetEntity = Employee.class,
-            cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE},
-            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
             mappedBy = "employmentContract"
     )
     @NotNull private List<Employee> employees = new ArrayList<>();

@@ -41,7 +41,6 @@ public class DailyEmployeeReportTest
         contract.setShiftBegin(LocalTime.now());
         contract.setShiftEnd(LocalTime.now());
         contract.setQuantityOfFullWorkDaysForOneHoliday(10);
-        contract.setActive(true);
 
         Employee employee = new Employee();
         employee.setFirstName("Patryk");
@@ -63,11 +62,10 @@ public class DailyEmployeeReportTest
         long sizeOfReportBefore = dailyEmployeeReportDao.count();
 
         // When
+        employmentContractDao.save(contract);
         dailyEmployeeReportDao.save(report);
 
-
         // Clean up
-        employeeDao.delete(employee.getId()); // delete employe and daily reports assigned to this employee. Becouse of cascade type ALL
         employmentContractDao.delete(contract.getId());
 
         // Then
