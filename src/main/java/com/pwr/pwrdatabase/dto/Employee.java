@@ -1,14 +1,18 @@
 package com.pwr.pwrdatabase.dto;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +26,7 @@ public class Employee
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID", updatable = false, unique = true)
+    @Column(updatable = false, unique = true)
     @NotNull private long id;
 
     @Column(length = 50)
@@ -41,4 +45,11 @@ public class Employee
     @JoinColumn(name = "ID_EMPLOYMENT_CONTRACT")
     @NotNull private EmploymentContract employmentContract;
 
+    @OneToMany(
+            targetEntity = WorkStartFinishEvent.class,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "employee"
+    )
+    @NotNull private List<WorkStartFinishEvent> WorkStartFinishEvents = new ArrayList<>();
 }

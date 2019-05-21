@@ -24,7 +24,7 @@ public class EmploymentContract
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID", unique = true)
+    @Column(updatable = false, unique = true)
     @NotNull private long id;
 
     @NotNull private String employmentType;
