@@ -34,9 +34,11 @@ public class EmploymentContract
     @NotNull private int quantityOfFullWorkDaysForOneHoliday;
     @NotNull private boolean active;
 
+    // Foreign Keys
+
     @OneToMany(
             targetEntity = Employee.class,
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.PERSIST,
             fetch = FetchType.LAZY,
             mappedBy = "employmentContract"
     )

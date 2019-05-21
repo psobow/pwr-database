@@ -3,9 +3,13 @@ package com.pwr.pwrdatabase.dto;
 import static org.junit.Assert.*;
 
 import com.pwr.pwrdatabase.dto.dao.EmployeeDao;
+import com.pwr.pwrdatabase.dto.dao.EmploymentContractDao;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +23,9 @@ public class EmployeeTest
 {
     @Autowired
     private EmployeeDao employeeDao;
+
+    @Autowired
+    private EmploymentContractDao employmentContractDao;
 
     @Test
     public void persistEmployee()
@@ -43,16 +50,28 @@ public class EmployeeTest
         employee.setEmploymentContract(contract);
         contract.getEmployees().add(employee);
 
+        // Save size of entities
+        long sizeOfContractBefore = employmentContractDao.count();
+        long sizeOfEmployeeBefore = employeeDao.count();
+
+
         // When
         employeeDao.save(employee);
         long employeeId = employee.getId();
 
+
         // Clean up
         employeeDao.delete(employeeId);
+        employmentContractDao.delete(contract.getId());
+
+        long sizeOfContractAfter = employmentContractDao.count();
+        long sizeOfEmployeeAfter = employeeDao.count();
 
         // Then
         log.info("New employee ID: " + employeeId);
 
+        Assert.assertEquals(sizeOfContractBefore, sizeOfContractAfter);
+        Assert.assertEquals(sizeOfEmployeeBefore, sizeOfEmployeeAfter);
     }
 
 

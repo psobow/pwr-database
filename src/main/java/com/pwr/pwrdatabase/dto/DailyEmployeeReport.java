@@ -1,6 +1,7 @@
 package com.pwr.pwrdatabase.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,15 +19,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class WorkStartFinishEvent
+public class DailyEmployeeReport
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(updatable = false, unique = true)
     @NotNull private long id;
 
-    @NotNull private LocalDateTime eventDateTime;
-    @NotNull private boolean beginning;
+    @NotNull private LocalDate reportDate;
+    @NotNull private LocalTime workTime;
+    @NotNull private double earnedCash;
+    @NotNull private boolean lateness;
+    private LocalTime latenessTime;
 
     // Foreign Keys
 

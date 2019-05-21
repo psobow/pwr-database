@@ -41,6 +41,8 @@ public class Employee
     @NotNull private LocalDate hireDate;
     @NotNull private int currentHolidays;
 
+    // Foreign Keys
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ID_EMPLOYMENT_CONTRACT")
     @NotNull private EmploymentContract employmentContract;
@@ -52,4 +54,12 @@ public class Employee
             mappedBy = "employee"
     )
     @NotNull private List<WorkStartFinishEvent> WorkStartFinishEvents = new ArrayList<>();
+
+    @OneToMany(
+            targetEntity = DailyEmployeeReport.class,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "employee"
+    )
+    @NotNull private List<DailyEmployeeReport> DailyEmployeeReports = new ArrayList<>();
 }
