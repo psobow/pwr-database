@@ -38,7 +38,7 @@ public class EmploymentContract
 
     @OneToMany(
             targetEntity = Employee.class,
-            cascade = CascadeType.PERSIST,
+            cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE},
             fetch = FetchType.LAZY,
             mappedBy = "employmentContract"
     )
