@@ -2,11 +2,10 @@ package com.pwr.pwrdatabase.dto;
 
 import static org.junit.Assert.*;
 
+import com.pwr.pwrdatabase.dto.dao.DailyEmployeeReportDao;
 import com.pwr.pwrdatabase.dto.dao.EmployeeDao;
 import com.pwr.pwrdatabase.dto.dao.EmploymentContractDao;
-import com.pwr.pwrdatabase.dto.dao.WorkStartFinishEventDao;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
@@ -19,19 +18,22 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Slf4j
-public class WorkStartFinishEventTest
+public class DailyEmployeeReportTest
 {
-    @Autowired WorkStartFinishEventDao workStartFinishEventDao;
-    @Autowired EmploymentContractDao employmentContractDao;
-    @Autowired EmployeeDao employeeDao;
+    @Autowired private EmployeeDao employeeDao;
+    @Autowired private EmploymentContractDao employmentContractDao;
+    @Autowired private DailyEmployeeReportDao dailyEmployeeReportDao;
 
     @Test
-    public void persistEvent()
+    public void persistReport()
     {
         // Given
-        WorkStartFinishEvent event = new WorkStartFinishEvent();
-        event.setEventDateTime(LocalDateTime.now());
-        event.setBeginning(true);
+        DailyEmployeeReport report = new DailyEmployeeReport();
+        report.setReportDate(LocalDate.now());
+        report.setWorkTime(LocalTime.of(7,50));
+        report.setEarnedCash(100);
+        report.setLateness(true);
+        report.setLatenessTime(LocalTime.of(0, 10));
 
         EmploymentContract contract = new EmploymentContract();
         contract.setEmploymentType("Employment Type");
@@ -52,33 +54,30 @@ public class WorkStartFinishEventTest
         employee.setEmploymentContract(contract);
         contract.getEmployees().add(employee);
 
-        employee.getWorkStartFinishEvents().add(event);
-        event.setEmployee(employee);
+        report.setEmployee(employee);
+        employee.getDailyEmployeeReports().add(report);
 
         // Save size of entities
         long sizeOfContractBefore = employmentContractDao.count();
         long sizeOfEmployeeBefore = employeeDao.count();
-        long sizeOfEventBefore = workStartFinishEventDao.count();
+        long sizeOfReportBefore = dailyEmployeeReportDao.count();
 
         // When
-        workStartFinishEventDao.save(event);
-        long idEvent = event.getId();
+        dailyEmployeeReportDao.save(report);
+
 
         // Clean up
-        employeeDao.delete(employee.getId()); // Deleting both new rows inserted to database, Employee and Event. becouse of CascadeType inside Employee entity.
+        employeeDao.delete(employee.getId()); // delete employe and daily reports assigned to this employee. Becouse of cascade type ALL
         employmentContractDao.delete(contract.getId());
-
 
         // Then
         long sizeOfContractAfter = employmentContractDao.count();
         long sizeOfEmployeeAfter = employeeDao.count();
-        long sizeOfEventAfter = workStartFinishEventDao.count();
-
-        //log.info("New event ID: " + idEvent);
+        long sizeOfReportAfter= dailyEmployeeReportDao.count();
 
         Assert.assertEquals(sizeOfContractBefore, sizeOfContractAfter);
         Assert.assertEquals(sizeOfEmployeeBefore, sizeOfEmployeeAfter);
-        Assert.assertEquals(sizeOfEventBefore, sizeOfEventAfter);
-    }
+        Assert.assertEquals(sizeOfReportBefore, sizeOfReportAfter);
 
+    }
 }
