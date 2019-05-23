@@ -1,3 +1,8 @@
 Przemyśleć fetch = FetchType.EAGER w encjach.
 Gdybym miał to zmienić na LAZY to trzeba mieć na uwadze że wtedy powstaną problemy,
 mianowicie trzeba będzie w jakiś sposób jawnie wysyłać żądania do bazy danych zeby 'dofetchowało' tą kolekcje która jest LAZY
+
+Trzeba uważać przy usuwania obiektów. Usunięcie z bazy danych obiektu EmploymentContract spowoduje kaskadowe usunięcie
+wszystkich obiektów Employee, do których są referencje. To natomiast spowoduje usnięcie wszystkich obiektów:
+DailyEmployeeReport, EmployeeAbsent, WorkStartFinishEvent oraz obiektu Department. Usunięcie obiektu Department natomiast spowoduje
+usunięcie wszystkich pracowników ktorzy są w tym departamencie. i tak dalej..
