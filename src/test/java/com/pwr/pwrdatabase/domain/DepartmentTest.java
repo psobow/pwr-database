@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -114,5 +115,42 @@ public class DepartmentTest
         Assert.assertEquals(initSizeOfContract, terminalSizeOfContract);
         Assert.assertEquals(initSizeOfEmployee, terminalSizeOfEmployee);
         Assert.assertEquals(initSizeOfDepartment, terminalSizeOfDepartment);
+    }
+
+    @Test(expected = InvalidDataAccessApiUsageException.class)
+    public void shouldThrowException()
+    {
+        // Given
+        Department department = new Department();
+        department.setCity("Warszawa");
+        department.setZipCode("50-200");
+        department.setLocalNumber("49B");
+
+        EmploymentContract contract = new EmploymentContract();
+        contract.setEmploymentType("Employment Type");
+        contract.setHourPay(10.5);
+        contract.setShiftBegin(LocalTime.now());
+        contract.setShiftEnd(LocalTime.now());
+        contract.setQuantityOfFullWorkDaysForOneHoliday(10);
+
+        Employee employee = new Employee();
+        employee.setFirstName("Patryk");
+        employee.setSecondName("Tak");
+        employee.setPESEL("12345678901");
+        employee.setPhoneNumber("489 090 787");
+        employee.setHireDate(LocalDate.now());
+
+        // Set fields responsible for foreign keys
+        employee.setEmploymentContract(contract);
+        contract.getEmployees().add(employee);
+
+        employee.getDepartments().add(department);
+        department.getEmployees().add(employee);
+
+        // When
+        employmentContractDao.save(contract);
+
+        employeeDao.save(employee); // this should be persisted last
+        departmentDao.save(department);
     }
 }

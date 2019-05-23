@@ -9,3 +9,5 @@ TODO: Napisać metody equals które porównują encje bez uwzglednienia pola ID,
 TODO: Poprawić testy jednostkowe bo teraz nie będą działać, ponieważ zostało usunięte kaskadowe operacje na encjach
 czyli od teraz jak będziemy chcieli usunąć obiekty EmploymentType, Employee, Department najpierw musimy rozmontować relacje pomiędzy obiektami w javie
 później odświeżyć encje w bazie danych, i dopiero wtedy będzie można usunąć dany obiekt
+
+https://www.lvguowei.me/post/how-to-assertthat-two-objects-are-equal/

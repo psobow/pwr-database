@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -117,6 +118,36 @@ public class EmploymentContractTest
 
         Assert.assertEquals(initSizeOfContract + 1, sizeOfContractAfterDeleteContract1);
         Assert.assertEquals(initSizeOfEmployee + 1, sizeOfEmployeeAfterDeleteContract1);
+    }
+
+    @Test(expected = InvalidDataAccessApiUsageException.class)
+    public void shouldThrowException()
+    {
+        // Given
+        EmploymentContract contract1 = new EmploymentContract();
+        contract1.setEmploymentType("Employment Type One");
+        contract1.setHourPay(10.5);
+        contract1.setShiftBegin(LocalTime.now());
+        contract1.setShiftEnd(LocalTime.now());
+        contract1.setQuantityOfFullWorkDaysForOneHoliday(10);
+
+        Employee employee = new Employee();
+        employee.setFirstName("Patryk");
+        employee.setSecondName("Tak");
+        employee.setPESEL("12345678901");
+        employee.setPhoneNumber("489 090 787");
+        employee.setHireDate(LocalDate.now());
+
+        // Set fields responsible for foreign keys
+        employee.setEmploymentContract(contract1);
+        contract1.getEmployees().add(employee);
+
+        // When
+        employeeDao.save(employee);
+        employmentContractDao.save(contract1); // this should be persisted first
+
+        // Cause of this exception is incorrect order of persisting objets.
+        // Employee is owner of Employee - EmploymentContract, so EmploymentContract should be persisted first
     }
 
 }

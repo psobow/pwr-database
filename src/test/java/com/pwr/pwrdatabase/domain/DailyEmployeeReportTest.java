@@ -91,5 +91,6 @@ public class DailyEmployeeReportTest
 
         Assert.assertNull(employeeFromDatabase.getEmploymentContract());
         Assert.assertEquals(contractFromDatabase.getEmployees().size(), 0);
+
     }
 }
