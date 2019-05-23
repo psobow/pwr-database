@@ -25,7 +25,7 @@ public class DailyEmployeeReportTest
     @Autowired private DailyEmployeeReportDao dailyEmployeeReportDao;
 
     @Test
-    public void persistReport()
+    public void persistReportWithEmployeeAndContract()
     {
         // Given
         DailyEmployeeReport report = new DailyEmployeeReport();
@@ -63,7 +63,6 @@ public class DailyEmployeeReportTest
 
         // When
         employmentContractDao.save(contract);
-        dailyEmployeeReportDao.save(report);
 
         // Clean up
         employmentContractDao.delete(contract.getId());

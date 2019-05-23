@@ -24,7 +24,7 @@ public class EmployeeTest
     @Autowired private EmploymentContractDao employmentContractDao;
 
     @Test
-    public void persistEmploymentContractWithEmployee()
+    public void persistEmployeeWithEmploymentContract()
     {
         // Given
         EmploymentContract contract = new EmploymentContract();

@@ -26,7 +26,7 @@ public class WorkStartFinishEventTest
     @Autowired EmployeeDao employeeDao;
 
     @Test
-    public void persistEvent()
+    public void persistEventWithEmployeeAndContract()
     {
         // Given
         WorkStartFinishEvent event = new WorkStartFinishEvent();
@@ -61,7 +61,8 @@ public class WorkStartFinishEventTest
 
         // When
         employmentContractDao.save(contract);
-        workStartFinishEventDao.save(event);
+        event.setBeginning(false); // zmiana pola obiektu event
+        workStartFinishEventDao.save(event); // update istniejącego wpisu w bazie danych
 
         // Clean up
         employmentContractDao.delete(contract.getId());

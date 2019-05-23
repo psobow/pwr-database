@@ -14,7 +14,7 @@ public class PwrDatabaseApplicationTests
     @Test
     public void someTest()
     {
-        log.info("Hello Test!");
+        log.info("Hello Tests!");
     }
 
 }

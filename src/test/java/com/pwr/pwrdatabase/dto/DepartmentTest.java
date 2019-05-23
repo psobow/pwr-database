@@ -2,7 +2,7 @@ package com.pwr.pwrdatabase.dto;
 
 import static org.junit.Assert.*;
 
-import com.pwr.pwrdatabase.dto.dao.EmployeeAbsentDao;
+import com.pwr.pwrdatabase.dto.dao.DepartmentDao;
 import com.pwr.pwrdatabase.dto.dao.EmployeeDao;
 import com.pwr.pwrdatabase.dto.dao.EmploymentContractDao;
 import java.time.LocalDate;
@@ -18,20 +18,44 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Slf4j
-public class EmployeeAbsentTest
+public class DepartmentTest
 {
     @Autowired private EmployeeDao employeeDao;
     @Autowired private EmploymentContractDao employmentContractDao;
-    @Autowired private EmployeeAbsentDao employeeAbsentDao;
+    @Autowired private DepartmentDao departmentDao;
 
     @Test
-    public void persistEmployeeAbsentWithEmployeeAndContract()
+    public void persistDepartment()
     {
         // Given
-        EmployeeAbsent employeeAbsent = new EmployeeAbsent();
-        employeeAbsent.setTypeOfAbsent("Urlop zdrowotny");
-        employeeAbsent.setAbsentStartDate(LocalDate.now());
-        employeeAbsent.setAbsentDurationInDays(5);
+        Department department = new Department();
+        department.setCity("Warszawa");
+        department.setZipCode("50-200");
+        department.setLocalNumber("49B");
+
+        // Save size of entity
+        long sizeOfDepartmentBefore = departmentDao.count();
+
+        // When
+        departmentDao.save(department);
+
+        // Clean up
+        departmentDao.delete(department.getId());
+
+        // Then
+        long sizeOfDepartmentAfter = departmentDao.count();
+
+        Assert.assertEquals(sizeOfDepartmentBefore, sizeOfDepartmentAfter);
+    }
+
+    @Test
+    public void persistDepartmentWithEmployeeAndContract()
+    {
+        // Given
+        Department department = new Department();
+        department.setCity("Warszawa");
+        department.setZipCode("50-200");
+        department.setLocalNumber("49B");
 
         EmploymentContract contract = new EmploymentContract();
         contract.setEmploymentType("Employment Type");
@@ -51,13 +75,13 @@ public class EmployeeAbsentTest
         employee.setEmploymentContract(contract);
         contract.getEmployees().add(employee);
 
-        employeeAbsent.setEmployee(employee);
-        employee.getEmployeeAbsents().add(employeeAbsent);
+        employee.getDepartments().add(department);
+        department.getEmployees().add(employee);
 
         // Save size of entities
         long sizeOfContractBefore = employmentContractDao.count();
         long sizeOfEmployeeBefore = employeeDao.count();
-        long sizeOfAbsentBefore = employeeAbsentDao.count();
+        long sizeOfDepartmentBefore = departmentDao.count();
 
         // When
         employmentContractDao.save(contract);
@@ -68,10 +92,10 @@ public class EmployeeAbsentTest
         // Then
         long sizeOfContractAfter = employmentContractDao.count();
         long sizeOfEmployeeAfter = employeeDao.count();
-        long sizeOfAbsentAfter = employeeAbsentDao.count();
+        long sizeOfDepartmentAfter= departmentDao.count();
 
         Assert.assertEquals(sizeOfContractBefore, sizeOfContractAfter);
         Assert.assertEquals(sizeOfEmployeeBefore, sizeOfEmployeeAfter);
-        Assert.assertEquals(sizeOfAbsentBefore, sizeOfAbsentAfter);
+        Assert.assertEquals(sizeOfDepartmentBefore, sizeOfDepartmentAfter);
     }
 }

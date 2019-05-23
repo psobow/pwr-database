@@ -6,11 +6,12 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
@@ -73,4 +74,13 @@ public class Employee
     )
     @LazyCollection(LazyCollectionOption.FALSE)
     @NotNull private List<EmployeeAbsent> employeeAbsents = new ArrayList<>();
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "JOINT_EMPLOYEE_DEPARTMENT",
+            joinColumns = {@JoinColumn (name = "EMPLOYEE_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn (name = "DEPARTMENT_ID", referencedColumnName = "ID")}
+    )
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @NotNull private List<Department> departments = new ArrayList<>();
 }
