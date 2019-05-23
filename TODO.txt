@@ -2,7 +2,10 @@ Przemyśleć fetch = FetchType.EAGER w encjach.
 Gdybym miał to zmienić na LAZY to trzeba mieć na uwadze że wtedy powstaną problemy,
 mianowicie trzeba będzie w jakiś sposób jawnie wysyłać żądania do bazy danych zeby 'dofetchowało' tą kolekcje która jest LAZY
 
-Trzeba uważać przy usuwania obiektów. Usunięcie z bazy danych obiektu EmploymentContract spowoduje kaskadowe usunięcie
-wszystkich obiektów Employee, do których są referencje. To natomiast spowoduje usnięcie wszystkich obiektów:
-DailyEmployeeReport, EmployeeAbsent, WorkStartFinishEvent oraz obiektu Department. Usunięcie obiektu Department natomiast spowoduje
-usunięcie wszystkich pracowników ktorzy są w tym departamencie. i tak dalej..
+TODO: Napisać metody equals które porównują encje bez uwzglednienia pola ID, porównywanie powinno się odbywać jedynie na podstawie pól które opisują ten obiekt, czyli klucze obce tez nie biorą udziału w porównywaniu
+@EqualsAndHashCode(exclude = {"doNotAddMeToEqualsAndHashCode"})
+
+
+TODO: Poprawić testy jednostkowe bo teraz nie będą działać, ponieważ zostało usunięte kaskadowe operacje na encjach
+czyli od teraz jak będziemy chcieli usunąć obiekty EmploymentType, Employee, Department najpierw musimy rozmontować relacje pomiędzy obiektami w javie
+później odświeżyć encje w bazie danych, i dopiero wtedy będzie można usunąć dany obiekt

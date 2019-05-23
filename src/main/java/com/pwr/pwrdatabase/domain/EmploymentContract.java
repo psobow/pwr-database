@@ -1,9 +1,8 @@
-package com.pwr.pwrdatabase.dto;
+package com.pwr.pwrdatabase.domain;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +20,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public class EmploymentContract
 {
     @Id
@@ -37,7 +38,6 @@ public class EmploymentContract
 
     @OneToMany(
             targetEntity = Employee.class,
-            cascade = CascadeType.ALL,
             fetch = FetchType.EAGER,
             mappedBy = "employmentContract"
     )

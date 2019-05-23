@@ -1,4 +1,4 @@
-package com.pwr.pwrdatabase.dto;
+package com.pwr.pwrdatabase.domain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -49,9 +49,10 @@ public class Employee
 
     // Foreign Keys
 
-    @ManyToOne()
+    // Employee is owner of this relation
+    @ManyToOne(cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "ID_EMPLOYMENT_CONTRACT")
-    @NotNull private EmploymentContract employmentContract;
+    private EmploymentContract employmentContract;
 
     @OneToMany(
             targetEntity = WorkStartFinishEvent.class,
@@ -77,7 +78,8 @@ public class Employee
     @LazyCollection(LazyCollectionOption.FALSE)
     @NotNull private List<EmployeeAbsent> employeeAbsents = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    // Employee is owner of this relation
+    @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinTable(
             name = "JOINT_EMPLOYEE_DEPARTMENT",
             joinColumns = {@JoinColumn (name = "EMPLOYEE_ID", referencedColumnName = "ID")},

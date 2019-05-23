@@ -1,6 +1,6 @@
-package com.pwr.pwrdatabase.dto.dao;
+package com.pwr.pwrdatabase.domain.dao;
 
-import com.pwr.pwrdatabase.dto.DailyEmployeeReport;
+import com.pwr.pwrdatabase.domain.DailyEmployeeReport;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.data.repository.CrudRepository;

@@ -1,9 +1,7 @@
-package com.pwr.pwrdatabase.dto;
+package com.pwr.pwrdatabase.domain;
 
-import static org.junit.Assert.*;
-
-import com.pwr.pwrdatabase.dto.dao.EmployeeDao;
-import com.pwr.pwrdatabase.dto.dao.EmploymentContractDao;
+import com.pwr.pwrdatabase.domain.dao.EmployeeDao;
+import com.pwr.pwrdatabase.domain.dao.EmploymentContractDao;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import lombok.extern.slf4j.Slf4j;
@@ -80,8 +78,9 @@ public class EmploymentContractTest
         long initSizeOfContract = employmentContractDao.count();
         long initSizeOfEmployee = employeeDao.count();
 
-        employmentContractDao.save(contract1); // Persist contract1 and employee
-        employmentContractDao.save(contract2); // Persist contract2
+        employmentContractDao.save(contract1);
+        employmentContractDao.save(contract2);
+        employeeDao.save(employee);
 
         // When
         // Delete employee from previous contract
@@ -92,8 +91,7 @@ public class EmploymentContractTest
         contract2.getEmployees().add(employee);
 
         // Refresh data in database
-        employmentContractDao.save(contract1);
-        employmentContractDao.save(contract2); // Refresh new contract is the most important
+        employeeDao.save(employee);
 
         // Delete only contract1
         employmentContractDao.delete(contract1.getId());
@@ -102,7 +100,13 @@ public class EmploymentContractTest
         long sizeOfEmployeeAfterDeleteContract1 = employeeDao.count();
 
         // Clean up (deleting contract2 and employee)
+        contract2.getEmployees().remove(employee);
+        employee.setEmploymentContract(null);
+
+        employeeDao.save(employee); // refresh data in database
+
         employmentContractDao.delete(contract2.getId());
+        employeeDao.delete(employee);
 
         long terminalSizeOfContract = employmentContractDao.count();
         long terminalSizeOfEmployee = employeeDao.count();

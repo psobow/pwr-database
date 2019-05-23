@@ -1,6 +1,6 @@
-package com.pwr.pwrdatabase.dto.dao;
+package com.pwr.pwrdatabase.domain.dao;
 
-import com.pwr.pwrdatabase.dto.WorkStartFinishEvent;
+import com.pwr.pwrdatabase.domain.WorkStartFinishEvent;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.data.repository.CrudRepository;

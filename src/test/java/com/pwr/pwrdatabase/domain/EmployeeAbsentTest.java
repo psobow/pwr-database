@@ -1,10 +1,8 @@
-package com.pwr.pwrdatabase.dto;
+package com.pwr.pwrdatabase.domain;
 
-import static org.junit.Assert.*;
-
-import com.pwr.pwrdatabase.dto.dao.EmployeeAbsentDao;
-import com.pwr.pwrdatabase.dto.dao.EmployeeDao;
-import com.pwr.pwrdatabase.dto.dao.EmploymentContractDao;
+import com.pwr.pwrdatabase.domain.dao.EmployeeAbsentDao;
+import com.pwr.pwrdatabase.domain.dao.EmployeeDao;
+import com.pwr.pwrdatabase.domain.dao.EmploymentContractDao;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import lombok.extern.slf4j.Slf4j;
@@ -55,23 +53,31 @@ public class EmployeeAbsentTest
         employee.getEmployeeAbsents().add(employeeAbsent);
 
         // Save size of entities
-        long sizeOfContractBefore = employmentContractDao.count();
-        long sizeOfEmployeeBefore = employeeDao.count();
-        long sizeOfAbsentBefore = employeeAbsentDao.count();
+        long initSizeOfContract = employmentContractDao.count();
+        long initSizeOfEmployee = employeeDao.count();
+        long initSizeOfAbsent = employeeAbsentDao.count();
 
         // When
         employmentContractDao.save(contract);
+        employeeDao.save(employee);
 
         // Clean up
+        // Break relation betwen contract - employee
+        contract.getEmployees().remove(employee);
+        employee.setEmploymentContract(null);
+
+        employeeDao.save(employee); // Refresh employee, contract and absent in database
+
         employmentContractDao.delete(contract.getId());
+        employeeDao.delete(employee);
 
         // Then
-        long sizeOfContractAfter = employmentContractDao.count();
-        long sizeOfEmployeeAfter = employeeDao.count();
-        long sizeOfAbsentAfter = employeeAbsentDao.count();
+        long terminalSizeOfContract = employmentContractDao.count();
+        long terminalSizeOfEmployee = employeeDao.count();
+        long terminalSizeOfAbsent = employeeAbsentDao.count();
 
-        Assert.assertEquals(sizeOfContractBefore, sizeOfContractAfter);
-        Assert.assertEquals(sizeOfEmployeeBefore, sizeOfEmployeeAfter);
-        Assert.assertEquals(sizeOfAbsentBefore, sizeOfAbsentAfter);
+        Assert.assertEquals(initSizeOfContract, terminalSizeOfContract);
+        Assert.assertEquals(initSizeOfEmployee, terminalSizeOfEmployee);
+        Assert.assertEquals(initSizeOfAbsent, terminalSizeOfAbsent);
     }
 }

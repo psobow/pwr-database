@@ -1,14 +1,14 @@
-package com.pwr.pwrdatabase.dto;
+package com.pwr.pwrdatabase.domain;
 
-import static org.junit.Assert.*;
 
-import com.pwr.pwrdatabase.dto.dao.EmployeeDao;
-import com.pwr.pwrdatabase.dto.dao.EmploymentContractDao;
-import com.pwr.pwrdatabase.dto.dao.WorkStartFinishEventDao;
+import com.pwr.pwrdatabase.domain.dao.EmployeeDao;
+import com.pwr.pwrdatabase.domain.dao.EmploymentContractDao;
+import com.pwr.pwrdatabase.domain.dao.WorkStartFinishEventDao;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import lombok.extern.slf4j.Slf4j;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,26 +55,36 @@ public class WorkStartFinishEventTest
         event.setEmployee(employee);
 
         // Save size of entities
-        long sizeOfContractBefore = employmentContractDao.count();
-        long sizeOfEmployeeBefore = employeeDao.count();
-        long sizeOfEventBefore = workStartFinishEventDao.count();
+        long initSizeOfContract = employmentContractDao.count();
+        long initSizeOfEmployee = employeeDao.count();
+        long initSizeOfEvent = workStartFinishEventDao.count();
 
         // When
         employmentContractDao.save(contract);
-        event.setBeginning(false); // zmiana pola obiektu event
-        workStartFinishEventDao.save(event); // update istniejącego wpisu w bazie danych
+        employeeDao.save(employee); // save employe and event
+
+        EmploymentContract contractFromDatabase = employmentContractDao.findOne(contract.getId());
 
         // Clean up
+        // Break relation betwen contract - employee
+        contract.getEmployees().remove(employee);
+        employee.setEmploymentContract(null);
+
+        employeeDao.save(employee); // refresh data
+
         employmentContractDao.delete(contract.getId());
+        employeeDao.delete(employee); // delete employe and event
 
         // Then
-        long sizeOfContractAfter = employmentContractDao.count();
-        long sizeOfEmployeeAfter = employeeDao.count();
-        long sizeOfEventAfter = workStartFinishEventDao.count();
+        long terminalSizeOfContract = employmentContractDao.count();
+        long terminalSizeOfEmployee = employeeDao.count();
+        long terminalSizeOfEvent = workStartFinishEventDao.count();
 
-        Assert.assertEquals(sizeOfContractBefore, sizeOfContractAfter);
-        Assert.assertEquals(sizeOfEmployeeBefore, sizeOfEmployeeAfter);
-        Assert.assertEquals(sizeOfEventBefore, sizeOfEventAfter);
+        Assert.assertEquals(initSizeOfContract, terminalSizeOfContract);
+        Assert.assertEquals(initSizeOfEmployee, terminalSizeOfEmployee);
+        Assert.assertEquals(initSizeOfEvent, terminalSizeOfEvent);
+
+        Assert.assertEquals(contractFromDatabase.getEmployees().size(), 1);
     }
 
 }

@@ -1,16 +1,16 @@
-package com.pwr.pwrdatabase.dto.dao;
+package com.pwr.pwrdatabase.domain.dao;
 
-import com.pwr.pwrdatabase.dto.Employee;
+import com.pwr.pwrdatabase.domain.EmployeeAbsent;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+
 @Transactional
 @Repository
-public interface EmployeeDao extends CrudRepository<Employee, Long>
+public interface EmployeeAbsentDao extends CrudRepository<EmployeeAbsent, Long>
 {
     @Override
-    List<Employee> findAll();
+    List<EmployeeAbsent> findAll();
 }
-

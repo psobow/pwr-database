@@ -1,10 +1,8 @@
-package com.pwr.pwrdatabase.dto;
+package com.pwr.pwrdatabase.domain;
 
-import static org.junit.Assert.*;
-
-import com.pwr.pwrdatabase.dto.dao.DepartmentDao;
-import com.pwr.pwrdatabase.dto.dao.EmployeeDao;
-import com.pwr.pwrdatabase.dto.dao.EmploymentContractDao;
+import com.pwr.pwrdatabase.domain.dao.DepartmentDao;
+import com.pwr.pwrdatabase.domain.dao.EmployeeDao;
+import com.pwr.pwrdatabase.domain.dao.EmploymentContractDao;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +18,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 @Slf4j
 public class DepartmentTest
 {
-    @Autowired private EmployeeDao employeeDao;
-    @Autowired private EmploymentContractDao employmentContractDao;
-    @Autowired private DepartmentDao departmentDao;
+    @Autowired
+    private EmployeeDao employeeDao;
+    @Autowired
+    private EmploymentContractDao employmentContractDao;
+    @Autowired
+    private DepartmentDao departmentDao;
 
     @Test
     public void persistDepartment()
@@ -79,23 +80,39 @@ public class DepartmentTest
         department.getEmployees().add(employee);
 
         // Save size of entities
-        long sizeOfContractBefore = employmentContractDao.count();
-        long sizeOfEmployeeBefore = employeeDao.count();
-        long sizeOfDepartmentBefore = departmentDao.count();
+        long initSizeOfContract = employmentContractDao.count();
+        long initSizeOfEmployee = employeeDao.count();
+        long initSizeOfDepartment = departmentDao.count();
 
         // When
         employmentContractDao.save(contract);
+        departmentDao.save(department);
+        employeeDao.save(employee);
+        // Employee is owner of department - Employee relation. That is why department has to be persisted first
+        // Same situation betwen Employee - EmploymentContract
 
         // Clean up
-        employmentContractDao.delete(contract.getId());
+        // Break relation betwen contract - employee
+        contract.getEmployees().remove(employee);
+        employee.setEmploymentContract(null);
+
+        // Break relation betwen department - employee
+        department.getEmployees().remove(employee);
+        employee.getDepartments().remove(department);
+
+        employeeDao.save(employee); // Refresh employee, contract, department in database. Since now we removed employee - department from JOIN_TABLE
+
+        employmentContractDao.delete(contract.getId()); // delete contract from database
+        departmentDao.delete(department); // department has to be removed before employee becouse Employee is relation owner
+        employeeDao.delete(employee.getId());
 
         // Then
-        long sizeOfContractAfter = employmentContractDao.count();
-        long sizeOfEmployeeAfter = employeeDao.count();
-        long sizeOfDepartmentAfter= departmentDao.count();
+        long terminalSizeOfContract = employmentContractDao.count();
+        long terminalSizeOfEmployee = employeeDao.count();
+        long terminalSizeOfDepartment = departmentDao.count();
 
-        Assert.assertEquals(sizeOfContractBefore, sizeOfContractAfter);
-        Assert.assertEquals(sizeOfEmployeeBefore, sizeOfEmployeeAfter);
-        Assert.assertEquals(sizeOfDepartmentBefore, sizeOfDepartmentAfter);
+        Assert.assertEquals(initSizeOfContract, terminalSizeOfContract);
+        Assert.assertEquals(initSizeOfEmployee, terminalSizeOfEmployee);
+        Assert.assertEquals(initSizeOfDepartment, terminalSizeOfDepartment);
     }
 }
