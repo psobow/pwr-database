@@ -1,7 +1,7 @@
 package com.pwr.pwrdatabase.domain.dao;
 
 import com.pwr.pwrdatabase.domain.EmployeeAbsent;
-import java.util.List;
+import java.util.Set;
 import javax.transaction.Transactional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -12,5 +12,8 @@ import org.springframework.stereotype.Repository;
 public interface EmployeeAbsentDao extends CrudRepository<EmployeeAbsent, Long>
 {
     @Override
-    List<EmployeeAbsent> findAll();
+    Set<EmployeeAbsent> findAll();
+
+    @Override
+    Set<EmployeeAbsent> findAll(Iterable<Long> IDs);
 }

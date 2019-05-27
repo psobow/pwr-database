@@ -1,8 +1,8 @@
 package com.pwr.pwrdatabase.domain;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,9 +19,10 @@ import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode (exclude = {"id", "employees"})
 public class EmploymentContract
 {
     @Id
@@ -41,7 +43,21 @@ public class EmploymentContract
             fetch = FetchType.EAGER,
             mappedBy = "employmentContract"
     )
-    @NotNull private List<Employee> employees = new ArrayList<>();
+    //@Getter(AccessLevel.NONE)
+    //@Setter(AccessLevel.NONE)
+    @NotNull
+    Set<Employee> employees = new HashSet<>();
+
+    public boolean addEmployee(final Employee employee)
+    {
+        return employees.add(employee);
+    }
+
+    public boolean removeEmployee(final Employee employee)
+    {
+        return employees.remove(employee);
+    }
+
 
 }
 

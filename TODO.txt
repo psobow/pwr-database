@@ -11,3 +11,17 @@ czyli od teraz jak będziemy chcieli usunąć obiekty EmploymentType, Employee, 
 później odświeżyć encje w bazie danych, i dopiero wtedy będzie można usunąć dany obiekt
 
 https://www.lvguowei.me/post/how-to-assertthat-two-objects-are-equal/
+
+Pojawił się problem przy mapowaniu obiektów z domenowych na DTO i z powrotem.
+Obiekty DTO nie mogą trzymać wzajemnych referencji do siebei tak jak to robią obiekty domenowe.
+Obiekty DTO po jednej stronie muszą trzymać tylko ID obiektów po drugiej stronie relacji.
+zapewni to wtedy że nie będzie wzajemnych referencji i będzie można te obiekty mapować.
+
+Ponadto trzeba przerobić mappery w taki sposób że jak mapujemy z obiektu domenowego na DTO to pojednej stronei zamiast referencji musimy wstawić ID
+natomiast w drugą strone z DTO na domenowe musimy wyciągnąć obiekty z bazy danych na podstawie ID
+
+TODO:
+public void test(@NotNull final String element)
+ta adnotacja chuja daje, jak przekaże argument null do tej funkcji to nie wylatuje zaden wyjątek...
+
+TODO: zastanowić się czy zamiast zbiorów ( setów) może lepiej używać słowników (Map) do przechowywania danych.

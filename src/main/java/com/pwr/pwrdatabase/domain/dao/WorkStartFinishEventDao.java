@@ -1,7 +1,7 @@
 package com.pwr.pwrdatabase.domain.dao;
 
 import com.pwr.pwrdatabase.domain.WorkStartFinishEvent;
-import java.util.List;
+import java.util.Set;
 import javax.transaction.Transactional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -11,5 +11,8 @@ import org.springframework.stereotype.Repository;
 public interface WorkStartFinishEventDao extends CrudRepository<WorkStartFinishEvent, Long>
 {
     @Override
-    List<WorkStartFinishEvent> findAll();
+    Set<WorkStartFinishEvent> findAll();
+
+    @Override
+    Set<WorkStartFinishEvent> findAll(Iterable<Long> IDs);
 }

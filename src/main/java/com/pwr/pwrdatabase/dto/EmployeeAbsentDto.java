@@ -1,13 +1,7 @@
-package com.pwr.pwrdatabase.domain;
+package com.pwr.pwrdatabase.dto;
 
 import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -15,17 +9,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode (exclude = "id")
-public class EmployeeAbsent
+public class EmployeeAbsentDto
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(updatable = false, unique = true)
     @NotNull private long id;
 
     @NotNull private String typeOfAbsent;
@@ -34,7 +25,5 @@ public class EmployeeAbsent
 
     // Foreign Keys
 
-    @ManyToOne()
-    @JoinColumn(name = "ID_EMPLOYEE")
-    @NotNull private Employee employee;
+    @NotNull private EmployeeDto employeeDto;
 }

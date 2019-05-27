@@ -1,7 +1,7 @@
 package com.pwr.pwrdatabase.domain.dao;
 
 import com.pwr.pwrdatabase.domain.DailyEmployeeReport;
-import java.util.List;
+import java.util.Set;
 import javax.transaction.Transactional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -11,5 +11,8 @@ import org.springframework.stereotype.Repository;
 public interface DailyEmployeeReportDao extends CrudRepository<DailyEmployeeReport, Long>
 {
     @Override
-    List<DailyEmployeeReport> findAll();
+    Set<DailyEmployeeReport> findAll();
+
+    @Override
+    Set<DailyEmployeeReport> findAll(Iterable<Long> IDs);
 }

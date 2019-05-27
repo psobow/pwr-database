@@ -1,8 +1,8 @@
 package com.pwr.pwrdatabase.domain;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,9 +25,20 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode (exclude = {
+        "id",
+        "phoneNumber",
+        "hireDate",
+        "currentHolidays",
+        "active",
+        "employmentContract",
+        "workStartFinishEvents",
+        "dailyEmployeeReports",
+        "employeeAbsents",
+        "departments"})
 public class Employee
 {
     @Id
@@ -60,7 +72,9 @@ public class Employee
             mappedBy = "employee"
     )
     @LazyCollection(LazyCollectionOption.FALSE)
-    @NotNull private List<WorkStartFinishEvent> workStartFinishEvents = new ArrayList<>();
+    //@Getter(AccessLevel.NONE)
+    //@Setter(AccessLevel.NONE)
+    @NotNull private Set<WorkStartFinishEvent> workStartFinishEvents = new HashSet<>();
 
     @OneToMany(
             targetEntity = DailyEmployeeReport.class,
@@ -68,7 +82,9 @@ public class Employee
             mappedBy = "employee"
     )
     @LazyCollection(LazyCollectionOption.FALSE)
-    @NotNull private List<DailyEmployeeReport> dailyEmployeeReports = new ArrayList<>();
+    //@Getter(AccessLevel.NONE)
+    //@Setter(AccessLevel.NONE)
+    @NotNull private Set<DailyEmployeeReport> dailyEmployeeReports = new HashSet<>();
 
     @OneToMany(
             targetEntity = EmployeeAbsent.class,
@@ -76,15 +92,59 @@ public class Employee
             mappedBy = "employee"
     )
     @LazyCollection(LazyCollectionOption.FALSE)
-    @NotNull private List<EmployeeAbsent> employeeAbsents = new ArrayList<>();
+    //@Getter(AccessLevel.NONE)
+    //@Setter(AccessLevel.NONE)
+    @NotNull private Set<EmployeeAbsent> employeeAbsents = new HashSet<>();
 
     // Employee is owner of this relation
     @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinTable(
-            name = "JOINT_EMPLOYEE_DEPARTMENT",
+            name = "JOIN_EMPLOYEE_DEPARTMENT",
             joinColumns = {@JoinColumn (name = "EMPLOYEE_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn (name = "DEPARTMENT_ID", referencedColumnName = "ID")}
     )
     @LazyCollection(LazyCollectionOption.FALSE)
-    @NotNull private List<Department> departments = new ArrayList<>();
+    //@Getter(AccessLevel.NONE)
+    //@Setter(AccessLevel.NONE)
+    @NotNull private Set<Department> departments = new HashSet<>();
+
+    public boolean addWorkStartFinishEvent(@NotNull final WorkStartFinishEvent event)
+    {
+        return workStartFinishEvents.add(event);
+    }
+
+    public boolean removeWorkStartFinishEvent(@NotNull final WorkStartFinishEvent event)
+    {
+        return workStartFinishEvents.remove(event);
+    }
+
+    public boolean addDailyEmployeeReport(@NotNull final DailyEmployeeReport report)
+    {
+        return dailyEmployeeReports.add(report);
+    }
+
+    public boolean removeDailyEmployeeReport(@NotNull final DailyEmployeeReport report)
+    {
+        return dailyEmployeeReports.remove(report);
+    }
+
+    public boolean addEmployeeAbsent(@NotNull final EmployeeAbsent absent)
+    {
+        return employeeAbsents.add(absent);
+    }
+
+    public boolean removeEmployeeAbsent(@NotNull final EmployeeAbsent absent)
+    {
+        return employeeAbsents.remove(absent);
+    }
+
+    public boolean addDepartment(@NotNull final Department department)
+    {
+        return departments.add(department);
+    }
+
+    public boolean removeDepartment(@NotNull final Department department)
+    {
+        return departments.remove(department);
+    }
 }
