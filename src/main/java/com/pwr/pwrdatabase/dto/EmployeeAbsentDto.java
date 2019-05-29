@@ -25,5 +25,5 @@ public class EmployeeAbsentDto
 
     // Foreign Keys
 
-    @NotNull private EmployeeDto employeeDto;
+    @NotNull private Long employeeDtoID;
 }

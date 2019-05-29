@@ -118,20 +118,34 @@ public class EmployeeServiceTest
         employee.setEmploymentContract(contract);
         contract.getEmployees().add(employee);
 
-        contractService.save(contract);
-        departmentService.save(department1);
-        departmentService.save(department2);
+        contract = contractService.save(contract);
+        department1 = departmentService.save(department1);
+        department2 = departmentService.save(department2);
 
-        employeeService.saveAndRefreshAllOtherEntities(employee);
+        employee = employeeService.saveAndRefreshAllOtherEntities(employee);
 
         // When
         employeeService.delete(employee);
 
 
         // Clean up
+
+        // Nie wiem dlaczego musze najpierw wyciągnąć z bazy te obiekty..
+        EmploymentContract contractFromDatabase = contractService.findOne(contract.getId());
+        Department department1FromDatabase = departmentService.findOne(department1.getId());
+        Department department2FromDatabase = departmentService.findOne(department2.getId());
+
+        contractService.delete(contractFromDatabase);
+        departmentService.delete(department1FromDatabase);
+        departmentService.delete(department2FromDatabase);
+
+        /*
+        // To powoduje błędy
+        contractService.delete(contract);
         departmentService.delete(department1);
         departmentService.delete(department2);
-        contractService.delete(contract);
+         */
+
 
         // Then
     }

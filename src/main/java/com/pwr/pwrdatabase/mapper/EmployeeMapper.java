@@ -4,9 +4,11 @@ import com.pwr.pwrdatabase.domain.DailyEmployeeReport;
 import com.pwr.pwrdatabase.domain.Department;
 import com.pwr.pwrdatabase.domain.Employee;
 import com.pwr.pwrdatabase.domain.EmployeeAbsent;
+import com.pwr.pwrdatabase.domain.EmploymentContract;
 import com.pwr.pwrdatabase.domain.WorkStartFinishEvent;
 import com.pwr.pwrdatabase.dto.EmployeeDto;
 import com.pwr.pwrdatabase.service.AbsentService;
+import com.pwr.pwrdatabase.service.ContractService;
 import com.pwr.pwrdatabase.service.DepartmentService;
 import com.pwr.pwrdatabase.service.ReportService;
 import com.pwr.pwrdatabase.service.WorkEventService;
@@ -19,8 +21,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmployeeMapper
 {
-    @Autowired private ContractMapper contractMapper;
-
+    @Autowired private ContractService contractService;
     @Autowired private WorkEventService workEventService;
     @Autowired private ReportService reportService;
     @Autowired private AbsentService absentService;
@@ -28,6 +29,7 @@ public class EmployeeMapper
 
     public Employee mapToEmployee(final EmployeeDto EMPLOYEE_DTO)
     {
+        EmploymentContract contractFromDatabase = contractService.findOne(EMPLOYEE_DTO.getEmploymentContractDtoID());
         Set<WorkStartFinishEvent> eventsFromDatabase = workEventService.findAll(EMPLOYEE_DTO.getWorkStartFinishEventsID());
         Set<DailyEmployeeReport> reportsFromDatabase = reportService.findAll(EMPLOYEE_DTO.getDailyEmployeeReportsID());
         Set<EmployeeAbsent> absentsFromDatabase = absentService.findAll(EMPLOYEE_DTO.getEmployeeAbsentsID());
@@ -41,7 +43,7 @@ public class EmployeeMapper
                             EMPLOYEE_DTO.getHireDate(),
                             EMPLOYEE_DTO.getCurrentHolidays(),
                             EMPLOYEE_DTO.isActive(),
-                            contractMapper.mapToContract(EMPLOYEE_DTO.getEmploymentContractDto()),
+                            contractFromDatabase,
                             eventsFromDatabase,
                             reportsFromDatabase,
                             absentsFromDatabase,
@@ -50,6 +52,7 @@ public class EmployeeMapper
 
     public EmployeeDto mapToEmployeeDto(final Employee EMPLOYEE)
     {
+        Long contractID = EMPLOYEE.getEmploymentContract().getId();
         Set<Long> eventsID = new HashSet<>();
         Set<Long> reportsID = new HashSet<>();
         Set<Long> absentsID = new HashSet<>();
@@ -67,7 +70,7 @@ public class EmployeeMapper
                                            EMPLOYEE.getHireDate(),
                                            EMPLOYEE.getCurrentHolidays(),
                                            EMPLOYEE.isActive(),
-                                           contractMapper.mapToContractDto(EMPLOYEE.getEmploymentContract()),
+                                           contractID,
                                            eventsID,
                                            reportsID,
                                            absentsID,

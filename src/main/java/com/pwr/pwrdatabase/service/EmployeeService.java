@@ -5,6 +5,7 @@ import com.pwr.pwrdatabase.domain.Employee;
 import com.pwr.pwrdatabase.domain.dao.EmployeeDao;
 import java.util.Iterator;
 import java.util.Set;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,36 +29,38 @@ public class EmployeeService
         return repository.findOne(ID);
     }
 
-    public Employee saveAndRefreshAllOtherEntities(final Employee employee)
+    public Employee saveAndRefreshAllOtherEntities(final Employee EMPLOYEE)
     {
-        if (employee.getEmploymentContract() == null ||
-            employee.getDepartments().size() == 0)
+        if (EMPLOYEE.getEmploymentContract() == null ||
+            EMPLOYEE.getDepartments().size() == 0)
         {
             throw new IllegalArgumentException("Invalid employee. can not persist employee without Contract or Department.");
         }
-        return repository.save(employee);
+        return repository.save(EMPLOYEE);
     }
 
-    public void delete(final Employee employee)
+
+    public void delete(final Employee EMPLOYEE)
     {
         // Break relation Employee - Contract
-        employee.getEmploymentContract().getEmployees().remove(employee);
-        employee.setEmploymentContract(null);
+        EMPLOYEE.getEmploymentContract().getEmployees().remove(EMPLOYEE);
+        EMPLOYEE.setEmploymentContract(null);
 
         // Break relation Employee - Departments
-        Iterator<Department> it = employee.getDepartments().iterator();
+        Iterator<Department> it = EMPLOYEE.getDepartments().iterator();
+        Department department = null;
         while (it.hasNext())
         {
-            Department department = it.next();
-            department.getEmployees().remove(employee);
+            department = it.next();
+            department.getEmployees().remove(EMPLOYEE);
             it.remove();
         }
 
         // Refresh data in database
-        repository.save(employee);
+        Employee employeeAfterRefresh = repository.save(EMPLOYEE);
 
         // Delete Employee with Absents, Reports, Events
-        repository.delete(employee);
+        repository.delete(employeeAfterRefresh);
     }
 
 }

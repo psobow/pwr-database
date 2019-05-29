@@ -22,7 +22,7 @@ import lombok.Setter;
         "hireDate",
         "currentHolidays",
         "active",
-        "employmentContractDto",
+        "employmentContractDtoID",
         "workStartFinishEventsID",
         "dailyEmployeeReportsID",
         "employeeAbsentsID",
@@ -44,7 +44,7 @@ public class EmployeeDto
 
     // Foreign Keys
 
-    private EmploymentContractDto employmentContractDto;
+    private Long employmentContractDtoID;
 
     @NotNull private Set<Long> workStartFinishEventsID = new HashSet<>();
 
