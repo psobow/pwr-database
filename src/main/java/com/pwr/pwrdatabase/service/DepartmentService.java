@@ -25,4 +25,18 @@ public class DepartmentService
     {
         return repository.findOne(ID);
     }
+
+    public Department save(final Department department)
+    {
+        return repository.save(department);
+    }
+
+    public void delete(final Department department)
+    {
+        if (department.getEmployees().size() != 0)
+        {
+            throw new IllegalArgumentException("Invalid department. Can not delete department with related employees.");
+        }
+        repository.delete(department);
+    }
 }

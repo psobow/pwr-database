@@ -36,17 +36,5 @@ public class Department
 
     @ManyToMany(targetEntity = Employee.class,
                 mappedBy = "departments")
-    //@Getter(AccessLevel.NONE)
-    //@Setter(AccessLevel.NONE)
     @NotNull Set<Employee> employees = new HashSet<>();
-
-    public boolean addEmployee(@NotNull final Employee employee)
-    {
-        return employees.add(employee);
-    }
-
-    public boolean removeEmployee(@NotNull final Employee employee)
-    {
-        return employees.remove(employee);
-    }
 }

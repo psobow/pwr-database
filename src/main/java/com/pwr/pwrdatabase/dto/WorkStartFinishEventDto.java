@@ -24,6 +24,6 @@ public class WorkStartFinishEventDto
     @NotNull private boolean beginning;
 
     // Foreign Keys
-// tutaj zamiast referencji do obiektu wystarczy jego ID
+
     @NotNull private EmployeeDto employeeDto;
 }

@@ -25,4 +25,13 @@ public class WorkEventService
     {
         return repository.findOne(ID);
     }
+
+    public WorkStartFinishEvent save(final WorkStartFinishEvent event)
+    {
+        if (event.getEmployee() == null)
+        {
+            throw new IllegalArgumentException("Invalid event. Can not persist event without Employee.");
+        }
+        return repository.save(event);
+    }
 }

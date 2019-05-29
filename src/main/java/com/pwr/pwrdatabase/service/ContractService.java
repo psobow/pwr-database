@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ContractService
 {
-    @Autowired EmploymentContractDao repository;
+    @Autowired private EmploymentContractDao repository;
 
     public Set<EmploymentContract> findAll()
     {
@@ -24,5 +24,19 @@ public class ContractService
     public EmploymentContract findOne(final Long ID)
     {
         return repository.findOne(ID);
+    }
+
+    public EmploymentContract save(final EmploymentContract contract)
+    {
+        return repository.save(contract);
+    }
+
+    public void delete(final EmploymentContract contract)
+    {
+        if (contract.getEmployees().size() != 0)
+        {
+            throw new IllegalArgumentException("Invalid contract. Can not delete contract with related employees.");
+        }
+        repository.delete(contract);
     }
 }

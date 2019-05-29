@@ -72,8 +72,6 @@ public class Employee
             mappedBy = "employee"
     )
     @LazyCollection(LazyCollectionOption.FALSE)
-    //@Getter(AccessLevel.NONE)
-    //@Setter(AccessLevel.NONE)
     @NotNull private Set<WorkStartFinishEvent> workStartFinishEvents = new HashSet<>();
 
     @OneToMany(
@@ -82,8 +80,6 @@ public class Employee
             mappedBy = "employee"
     )
     @LazyCollection(LazyCollectionOption.FALSE)
-    //@Getter(AccessLevel.NONE)
-    //@Setter(AccessLevel.NONE)
     @NotNull private Set<DailyEmployeeReport> dailyEmployeeReports = new HashSet<>();
 
     @OneToMany(
@@ -92,8 +88,6 @@ public class Employee
             mappedBy = "employee"
     )
     @LazyCollection(LazyCollectionOption.FALSE)
-    //@Getter(AccessLevel.NONE)
-    //@Setter(AccessLevel.NONE)
     @NotNull private Set<EmployeeAbsent> employeeAbsents = new HashSet<>();
 
     // Employee is owner of this relation
@@ -104,47 +98,6 @@ public class Employee
             inverseJoinColumns = {@JoinColumn (name = "DEPARTMENT_ID", referencedColumnName = "ID")}
     )
     @LazyCollection(LazyCollectionOption.FALSE)
-    //@Getter(AccessLevel.NONE)
-    //@Setter(AccessLevel.NONE)
     @NotNull private Set<Department> departments = new HashSet<>();
 
-    public boolean addWorkStartFinishEvent(@NotNull final WorkStartFinishEvent event)
-    {
-        return workStartFinishEvents.add(event);
-    }
-
-    public boolean removeWorkStartFinishEvent(@NotNull final WorkStartFinishEvent event)
-    {
-        return workStartFinishEvents.remove(event);
-    }
-
-    public boolean addDailyEmployeeReport(@NotNull final DailyEmployeeReport report)
-    {
-        return dailyEmployeeReports.add(report);
-    }
-
-    public boolean removeDailyEmployeeReport(@NotNull final DailyEmployeeReport report)
-    {
-        return dailyEmployeeReports.remove(report);
-    }
-
-    public boolean addEmployeeAbsent(@NotNull final EmployeeAbsent absent)
-    {
-        return employeeAbsents.add(absent);
-    }
-
-    public boolean removeEmployeeAbsent(@NotNull final EmployeeAbsent absent)
-    {
-        return employeeAbsents.remove(absent);
-    }
-
-    public boolean addDepartment(@NotNull final Department department)
-    {
-        return departments.add(department);
-    }
-
-    public boolean removeDepartment(@NotNull final Department department)
-    {
-        return departments.remove(department);
-    }
 }

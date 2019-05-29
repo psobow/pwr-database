@@ -43,21 +43,8 @@ public class EmploymentContract
             fetch = FetchType.EAGER,
             mappedBy = "employmentContract"
     )
-    //@Getter(AccessLevel.NONE)
-    //@Setter(AccessLevel.NONE)
     @NotNull
     Set<Employee> employees = new HashSet<>();
-
-    public boolean addEmployee(final Employee employee)
-    {
-        return employees.add(employee);
-    }
-
-    public boolean removeEmployee(final Employee employee)
-    {
-        return employees.remove(employee);
-    }
-
 
 }
 

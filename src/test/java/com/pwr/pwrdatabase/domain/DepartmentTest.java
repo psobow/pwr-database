@@ -19,12 +19,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 @Slf4j
 public class DepartmentTest
 {
-    @Autowired
-    private EmployeeDao employeeDao;
-    @Autowired
-    private EmploymentContractDao employmentContractDao;
-    @Autowired
-    private DepartmentDao departmentDao;
+    @Autowired private EmployeeDao employeeDao;
+    @Autowired private EmploymentContractDao employmentContractDao;
+    @Autowired private DepartmentDao departmentDao;
 
     @Test
     public void persistDepartment()

@@ -8,8 +8,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,14 +54,31 @@ public class WorkEventMapperTest
         employee.getWorkStartFinishEvents().add(event);
         event.setEmployee(employee);
 
-        Set<WorkStartFinishEvent> events = new HashSet<>();
-        events.add(event);
+        WorkStartFinishEventDto mappedEvent = workEventMapper.mapToEventDto(event);
 
-        Set<WorkStartFinishEventDto> eventDto = workEventMapper.mapToEventsDto(events);
+        WorkStartFinishEvent mappedBackEvent = workEventMapper.mapToEvent(mappedEvent);
 
-        /*
-        List<WorkStartFinishEventDto> eventDto2 = workEventMapper.mapToEventsDto(
-                    new ArrayList<WorkStartFinishEvent>() {{ add(new WorkStartFinishEvent()); }});
-        */
+
+        //Sztuczka inicjalizacyjna z wykorzystaniem anonimowych klas oraz bloków inicjalizacyjnych
+
+        Set<WorkStartFinishEventDto> eventDtoSet = workEventMapper.mapToEventsDto(
+                    new HashSet<WorkStartFinishEvent>()
+                    {
+                        {
+                            add(event);
+                        }
+                    });
+
+        Assert.assertEquals("WorkStartFinishEventDto", eventDtoSet.stream()
+                                                                  .findAny()
+                                                                  .orElseThrow( () -> new NoSuchElementException())
+                                                                  .getClass()
+                                                                  .getSimpleName());
+
+        Assert.assertEquals("WorkStartFinishEventDto", mappedEvent.getClass().getSimpleName());
+        Assert.assertEquals(event.getId(), mappedEvent.getId());
+
+        Assert.assertEquals("WorkStartFinishEvent", mappedBackEvent.getClass().getSimpleName());
+        Assert.assertEquals(event.getId(), mappedBackEvent.getId());
     }
 }

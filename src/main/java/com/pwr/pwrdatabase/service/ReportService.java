@@ -25,4 +25,13 @@ public class ReportService
     {
         return repository.findOne(ID);
     }
+
+    public DailyEmployeeReport save(final DailyEmployeeReport report)
+    {
+        if (report.getEmployee() == null)
+        {
+            throw new IllegalArgumentException("Invalid report. Can not persist Report without Employee.");
+        }
+        return repository.save(report);
+    }
 }

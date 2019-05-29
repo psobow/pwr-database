@@ -25,4 +25,13 @@ public class AbsentService
     {
         return repository.findOne(ID);
     }
+
+    public EmployeeAbsent save(final EmployeeAbsent absent)
+    {
+        if (absent.getEmployee() == null)
+        {
+            throw new IllegalArgumentException("Invalid absent. Can not persist Absent without Employee.");
+        }
+        return repository.save(absent);
+    }
 }
