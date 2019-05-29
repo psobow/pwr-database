@@ -129,8 +129,13 @@ public class EmployeeServiceTest
 
 
         // Clean up
-        departmentService.delete(department1);
-        departmentService.delete(department2);
+       // Department departmentFromDatabase = departmentService.findOne(department1.getId());
+
+        EmploymentContract contractFromDatabase = contractService.findOne(contract.getId());
+
+//        departmentService.delete(department1);
+//        departmentService.delete(department2);
+        contractService.save(contract);
         contractService.delete(contract);
 
         // Then

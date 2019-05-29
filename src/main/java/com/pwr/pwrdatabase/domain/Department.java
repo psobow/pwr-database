@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,6 +36,7 @@ public class Department
     // Foreign key
 
     @ManyToMany(targetEntity = Employee.class,
+                fetch = FetchType.EAGER,
                 mappedBy = "departments")
     @NotNull Set<Employee> employees = new HashSet<>();
 }
