@@ -11,6 +11,11 @@ public class ContractService
 {
     @Autowired private EmploymentContractDao repository;
 
+    public Long count()
+    {
+        return repository.count();
+    }
+
     public Set<EmploymentContract> findAll()
     {
         return repository.findAll();
@@ -37,6 +42,12 @@ public class ContractService
         {
             throw new IllegalArgumentException("Invalid contract. Can not delete contract with related employees.");
         }
-        repository.delete(CONTRACT);
+        repository.delete(CONTRACT.getId());
+    }
+
+    public void delete(final Long ID)
+    {
+        EmploymentContract contractFromDatabase = this.repository.findOne(ID);
+        this.delete(contractFromDatabase);
     }
 }

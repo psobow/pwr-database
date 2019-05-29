@@ -6,17 +6,19 @@ import com.pwr.pwrdatabase.dto.EmployeeAbsentDto;
 import com.pwr.pwrdatabase.service.EmployeeService;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class AbsentMapper
 {
-    @Autowired private EmployeeService employeeService;
+    private final EmployeeService EMPLOYEE_SERVICE;
 
     public EmployeeAbsent mapToAbsent(final EmployeeAbsentDto ABSENT_DTO)
     {
-        Employee employeeFromDatabase = employeeService.findOne(ABSENT_DTO.getEmployeeDtoID());
+        Employee employeeFromDatabase = this.EMPLOYEE_SERVICE.findOne(ABSENT_DTO.getEmployeeDtoID());
         return new EmployeeAbsent(ABSENT_DTO.getId(),
                                   ABSENT_DTO.getTypeOfAbsent(),
                                   ABSENT_DTO.getAbsentStartDate(),

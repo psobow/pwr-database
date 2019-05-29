@@ -14,6 +14,11 @@ public class EmployeeService
 {
     @Autowired private EmployeeDao repository;
 
+    public Long count()
+    {
+        return repository.count();
+    }
+
     public Set<Employee> findAll()
     {
         return repository.findAll();
@@ -60,7 +65,13 @@ public class EmployeeService
         Employee employeeAfterRefresh = repository.save(EMPLOYEE);
 
         // Delete Employee with Absents, Reports, Events
-        repository.delete(employeeAfterRefresh);
+        repository.delete(employeeAfterRefresh.getId());
+    }
+
+    public void delete(final Long ID)
+    {
+        Employee employeeFromDatabase = this.repository.findOne(ID);
+        this.delete(employeeFromDatabase);
     }
 
 }

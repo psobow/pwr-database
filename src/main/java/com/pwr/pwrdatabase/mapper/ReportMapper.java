@@ -6,17 +6,18 @@ import com.pwr.pwrdatabase.dto.DailyEmployeeReportDto;
 import com.pwr.pwrdatabase.service.EmployeeService;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ReportMapper
 {
-    @Autowired private EmployeeService employeeService;
+    private final EmployeeService EMPLOYEE_SERVICE;
 
     public DailyEmployeeReport mapToReport(final DailyEmployeeReportDto REPORT_DTO)
     {
-        Employee employeeFromDatabase = employeeService.findOne(REPORT_DTO.getEmployeeDtoID());
+        Employee employeeFromDatabase = this.EMPLOYEE_SERVICE.findOne(REPORT_DTO.getEmployeeDtoID());
         return new DailyEmployeeReport(REPORT_DTO.getId(),
                                        REPORT_DTO.getReportDate(),
                                        REPORT_DTO.getWorkTime(),

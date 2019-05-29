@@ -33,18 +33,21 @@ public class DepartmentTest
         department.setLocalNumber("49B");
 
         // Save size of entity
-        long sizeOfDepartmentBefore = departmentDao.count();
+        long initSizeOfDepartment = departmentDao.count();
 
         // When
         departmentDao.save(department);
+
+        long sizeOfDepartment = departmentDao.count();
 
         // Clean up
         departmentDao.delete(department.getId());
 
         // Then
-        long sizeOfDepartmentAfter = departmentDao.count();
+        long terminalSizeOfDepartment = departmentDao.count();
 
-        Assert.assertEquals(sizeOfDepartmentBefore, sizeOfDepartmentAfter);
+        Assert.assertEquals(initSizeOfDepartment, terminalSizeOfDepartment);
+        Assert.assertEquals(initSizeOfDepartment + 1, sizeOfDepartment);
     }
 
     @Test

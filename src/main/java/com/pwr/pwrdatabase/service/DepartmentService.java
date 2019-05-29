@@ -11,6 +11,11 @@ public class DepartmentService
 {
     @Autowired private DepartmentDao repository;
 
+    public Long count()
+    {
+        return repository.count();
+    }
+
     public Set<Department> findAll()
     {
         return repository.findAll();
@@ -37,6 +42,12 @@ public class DepartmentService
         {
             throw new IllegalArgumentException("Invalid department. Can not delete department with related employees.");
         }
-        repository.delete(DEPARTMENT);
+        repository.delete(DEPARTMENT.getId());
+    }
+
+    public void delete(final Long ID)
+    {
+        Department departmentFromDatabase = this.repository.findOne(ID);
+        this.delete(departmentFromDatabase);
     }
 }

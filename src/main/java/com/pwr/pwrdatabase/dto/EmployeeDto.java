@@ -33,10 +33,9 @@ public class EmployeeDto
     @NotNull private long id;
 
     @NotNull private String firstName;
-
     @NotNull private String secondName;
-
     @NotNull private String PESEL;
+
     @NotNull private String phoneNumber;
     @NotNull private LocalDate hireDate;
     @NotNull private int currentHolidays;

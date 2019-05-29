@@ -6,17 +6,18 @@ import com.pwr.pwrdatabase.dto.WorkStartFinishEventDto;
 import com.pwr.pwrdatabase.service.EmployeeService;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class WorkEventMapper
 {
-    @Autowired EmployeeService employeeService;
+    private final EmployeeService EMPLOYEE_SERVICE;
 
     public WorkStartFinishEvent mapToEvent(final WorkStartFinishEventDto EVENT_DTO)
     {
-        Employee employeeFromDatabase = employeeService.findOne(EVENT_DTO.getEmployeeDtoID());
+        Employee employeeFromDatabase = this.EMPLOYEE_SERVICE.findOne(EVENT_DTO.getEmployeeDtoID());
         return new WorkStartFinishEvent(EVENT_DTO.getId(),
                                         EVENT_DTO.getEventDateTime(),
                                         EVENT_DTO.isBeginning(),
