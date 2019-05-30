@@ -11,6 +11,11 @@ public class ContractService
 {
     @Autowired private EmploymentContractDao repository;
 
+    public Long count()
+    {
+        return repository.count();
+    }
+
     public Set<EmploymentContract> findAll()
     {
         return repository.findAll();
@@ -26,17 +31,23 @@ public class ContractService
         return repository.findOne(ID);
     }
 
-    public EmploymentContract save(final EmploymentContract contract)
+    public EmploymentContract save(final EmploymentContract CONTRACT)
     {
-        return repository.save(contract);
+        return repository.save(CONTRACT);
     }
 
-    public void delete(final EmploymentContract contract)
+    public void delete(final EmploymentContract CONTRACT)
     {
-        if (contract.getEmployees().size() != 0)
+        if (CONTRACT.getEmployees().size() != 0)
         {
             throw new IllegalArgumentException("Invalid contract. Can not delete contract with related employees.");
         }
-        repository.delete(contract);
+        repository.delete(CONTRACT.getId());
+    }
+
+    public void delete(final Long ID)
+    {
+        EmploymentContract contractFromDatabase = this.repository.findOne(ID);
+        this.delete(contractFromDatabase);
     }
 }

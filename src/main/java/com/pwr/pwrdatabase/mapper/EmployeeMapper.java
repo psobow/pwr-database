@@ -15,25 +15,26 @@ import com.pwr.pwrdatabase.service.WorkEventService;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class EmployeeMapper
 {
-    @Autowired private ContractService contractService;
-    @Autowired private WorkEventService workEventService;
-    @Autowired private ReportService reportService;
-    @Autowired private AbsentService absentService;
-    @Autowired private DepartmentService departmentService;
+    private final ContractService CONTRACT_SERVICE;
+    private final WorkEventService WORK_EVENT_SERVICE;
+    private final ReportService REPORT_SERVICE;
+    private final AbsentService ABSENT_SERVICE;
+    private final DepartmentService DEPARTMENT_SERVICE;
 
     public Employee mapToEmployee(final EmployeeDto EMPLOYEE_DTO)
     {
-        EmploymentContract contractFromDatabase = contractService.findOne(EMPLOYEE_DTO.getEmploymentContractDtoID());
-        Set<WorkStartFinishEvent> eventsFromDatabase = workEventService.findAll(EMPLOYEE_DTO.getWorkStartFinishEventsID());
-        Set<DailyEmployeeReport> reportsFromDatabase = reportService.findAll(EMPLOYEE_DTO.getDailyEmployeeReportsID());
-        Set<EmployeeAbsent> absentsFromDatabase = absentService.findAll(EMPLOYEE_DTO.getEmployeeAbsentsID());
-        Set<Department> departmentsFromDatabase = departmentService.findAll(EMPLOYEE_DTO.getDepartmentsID());
+        EmploymentContract contractFromDatabase = this.CONTRACT_SERVICE.findOne(EMPLOYEE_DTO.getEmploymentContractDtoID());
+        Set<WorkStartFinishEvent> eventsFromDatabase = this.WORK_EVENT_SERVICE.findAll(EMPLOYEE_DTO.getWorkStartFinishEventsID());
+        Set<DailyEmployeeReport> reportsFromDatabase = this.REPORT_SERVICE.findAll(EMPLOYEE_DTO.getDailyEmployeeReportsID());
+        Set<EmployeeAbsent> absentsFromDatabase = this.ABSENT_SERVICE.findAll(EMPLOYEE_DTO.getEmployeeAbsentsID());
+        Set<Department> departmentsFromDatabase = this.DEPARTMENT_SERVICE.findAll(EMPLOYEE_DTO.getDepartmentsID());
 
         return new Employee(EMPLOYEE_DTO.getId(),
                             EMPLOYEE_DTO.getFirstName(),

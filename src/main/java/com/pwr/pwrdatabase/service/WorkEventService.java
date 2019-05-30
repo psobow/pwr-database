@@ -11,6 +11,11 @@ public class WorkEventService
 {
     @Autowired private WorkStartFinishEventDao repository;
 
+    public Long count()
+    {
+        return repository.count();
+    }
+
     public Set<WorkStartFinishEvent> findAll()
     {
         return repository.findAll();

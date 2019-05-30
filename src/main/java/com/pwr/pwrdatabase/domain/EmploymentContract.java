@@ -22,7 +22,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode (exclude = {"id", "employees"})
+@EqualsAndHashCode (exclude = {"id", "employees", "shiftBegin", "shiftEnd"})
 public class EmploymentContract
 {
     @Id

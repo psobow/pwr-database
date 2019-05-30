@@ -11,6 +11,11 @@ public class ReportService
 {
     @Autowired private DailyEmployeeReportDao repository;
 
+    public Long count()
+    {
+        return repository.count();
+    }
+
     public Set<DailyEmployeeReport> findAll()
     {
         return repository.findAll();

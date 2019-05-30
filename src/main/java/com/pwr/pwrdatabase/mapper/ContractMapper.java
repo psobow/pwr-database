@@ -6,17 +6,18 @@ import com.pwr.pwrdatabase.dto.EmploymentContractDto;
 import com.pwr.pwrdatabase.service.EmployeeService;
 import java.util.HashSet;
 import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ContractMapper
 {
-    @Autowired private EmployeeService employeeService;
+    private final EmployeeService EMPLOYEE_SERVICE;
 
     public EmploymentContract mapToContract(final EmploymentContractDto CONTRACT_DTO)
     {
-        Set<Employee> employeesFromDatabase = employeeService.findAll(CONTRACT_DTO.getEmployeesID());
+        Set<Employee> employeesFromDatabase = this.EMPLOYEE_SERVICE.findAll(CONTRACT_DTO.getEmployeesID());
         return new EmploymentContract(CONTRACT_DTO.getId(),
                                       CONTRACT_DTO.getEmploymentType(),
                                       CONTRACT_DTO.getHourPay(),

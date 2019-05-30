@@ -1,27 +1,41 @@
 Przemyśleć fetch = FetchType.EAGER w encjach.
 Gdybym miał to zmienić na LAZY to trzeba mieć na uwadze że wtedy powstaną problemy,
-mianowicie trzeba będzie w jakiś sposób jawnie wysyłać żądania do bazy danych zeby 'dofetchowało' tą kolekcje która jest LAZY
+mianowicie trzeba będzie w jakiś sposób jawnie wysyłać żądania do bazy danych zeby 'dofetchowało' tą kolekcje która jest LAZY kiedy będzie mi ona potrzebna.
 
-TODO: Napisać metody equals które porównują encje bez uwzglednienia pola ID, porównywanie powinno się odbywać jedynie na podstawie pól które opisują ten obiekt, czyli klucze obce tez nie biorą udziału w porównywaniu
-@EqualsAndHashCode(exclude = {"doNotAddMeToEqualsAndHashCode"})
-
-
-TODO: Poprawić testy jednostkowe bo teraz nie będą działać, ponieważ zostało usunięte kaskadowe operacje na encjach
-czyli od teraz jak będziemy chcieli usunąć obiekty EmploymentType, Employee, Department najpierw musimy rozmontować relacje pomiędzy obiektami w javie
-później odświeżyć encje w bazie danych, i dopiero wtedy będzie można usunąć dany obiekt
-
+// jakiś link przydatny
 https://www.lvguowei.me/post/how-to-assertthat-two-objects-are-equal/
 
 Pojawił się problem przy mapowaniu obiektów z domenowych na DTO i z powrotem.
-Obiekty DTO nie mogą trzymać wzajemnych referencji do siebei tak jak to robią obiekty domenowe.
-Obiekty DTO po jednej stronie muszą trzymać tylko ID obiektów po drugiej stronie relacji.
+Obiekty DTO nie mogą trzymać wzajemnych referencji do siebie tak jak to robią obiekty domenowe.
+Obiekty DTO po jednej stronie muszą trzymać tylko ID obiektów po drugiej stronie relacji. (albo po obu stronach tylko ID)
 zapewni to wtedy że nie będzie wzajemnych referencji i będzie można te obiekty mapować.
 
-Ponadto trzeba przerobić mappery w taki sposób że jak mapujemy z obiektu domenowego na DTO to pojednej stronei zamiast referencji musimy wstawić ID
-natomiast w drugą strone z DTO na domenowe musimy wyciągnąć obiekty z bazy danych na podstawie ID
-
-TODO:
-public void test(@NotNull final String element)
+TODO: public void test(@NotNull final String element)
 ta adnotacja chuja daje, jak przekaże argument null do tej funkcji to nie wylatuje zaden wyjątek...
+trzeba jakoś inaczej weryfikować czy otrzymywane parametry nie są nullami...
+
 
 TODO: zastanowić się czy zamiast zbiorów ( setów) może lepiej używać słowników (Map) do przechowywania danych.
+
+
+Gdybym w serwisach w metodzie delete używał repository.delete(T entity) zamiast repository.delete(Long ID)  to musiałbym robić tak:
+
+EmploymentContract contractFromDatabase = contractService.findOne(contract.getId());
+Department department1FromDatabase = departmentService.findOne(department1.getId());
+Department department2FromDatabase = departmentService.findOne(department2.getId());
+
+contractService.delete(contractFromDatabase);
+departmentService.delete(department1FromDatabase);
+departmentService.delete(department2FromDatabase);
+
+Gdybym chciał pominąc pierwsze trzy linijki wyżej, te z metodami findOne, to dostawałbym błąd przy wykonaniu contractService.delete(contractFromDatabase);
+ponieważ te obiekty w programie i obiekty w bazie danych z jakiegoś dziwnego powodu dla mnie się różnią, pomimo tego że relacja została rozerwana i w backendzie i w bazie danych.
+Błąd dotyczy tego że jak próbuje usunąć contract to dostaniemy wyjątek że nie program nie może znaleźc obiektu Employee który przed chwilą usuneliśmy.
+dlatego bezpiecznie jest żeby metoda serwisu delete korzystała z metody delete(Long ID)
+
+lepiej używać repository.delete(Long ID)
+
+TODO: dokończyć implementowanie logiki w serwisach
+TODO: przetestować te serwisy
+TODO: wystawić controlery restowe
+TODO: dodać swaggera

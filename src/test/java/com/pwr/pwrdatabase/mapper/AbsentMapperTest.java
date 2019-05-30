@@ -1,11 +1,10 @@
 package com.pwr.pwrdatabase.mapper;
 
 import com.pwr.pwrdatabase.domain.Employee;
+import com.pwr.pwrdatabase.domain.EmployeeAbsent;
 import com.pwr.pwrdatabase.domain.EmploymentContract;
-import com.pwr.pwrdatabase.domain.WorkStartFinishEvent;
-import com.pwr.pwrdatabase.dto.WorkStartFinishEventDto;
+import com.pwr.pwrdatabase.dto.EmployeeAbsentDto;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -18,17 +17,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Slf4j
-public class WorkEventMapperTest
+public class AbsentMapperTest
 {
-    @Autowired private WorkEventMapper workEventMapper;
-
+    @Autowired private AbsentMapper absentMapper;
     @Test
     public void mapperTest()
     {
+        // Given
         EmploymentContract contract = new EmploymentContract();
         contract.setEmploymentType("Employment Type");
         contract.setHourPay(10.5);
@@ -43,44 +41,45 @@ public class WorkEventMapperTest
         employee.setPhoneNumber("489 090 787");
         employee.setHireDate(LocalDate.now());
 
-        WorkStartFinishEvent event = new WorkStartFinishEvent();
-        event.setEventDateTime(LocalDateTime.now());
-        event.setBeginning(true);
+        EmployeeAbsent employeeAbsent = new EmployeeAbsent();
+        employeeAbsent.setTypeOfAbsent("Urlop zdrowotny");
+        employeeAbsent.setAbsentStartDate(LocalDate.now());
+        employeeAbsent.setAbsentDurationInDays(5);
 
         // Set fields responsible for foreign keys
         employee.setEmploymentContract(contract);
         contract.getEmployees().add(employee);
 
-        employee.getWorkStartFinishEvents().add(event);
-        event.setEmployee(employee);
+        employeeAbsent.setEmployee(employee);
+        employee.getEmployeeAbsents().add(employeeAbsent);
 
-        WorkStartFinishEventDto mappedEvent = workEventMapper.mapToEventDto(event);
+        // When
+        EmployeeAbsentDto mappedToDTO = absentMapper.mapToAbsentDto(employeeAbsent);
 
-        WorkStartFinishEvent mappedBackEvent = workEventMapper.mapToEvent(mappedEvent);
+        EmployeeAbsent mappedBack = absentMapper.mapToAbsent(mappedToDTO);
 
 
         //Sztuczka inicjalizacyjna z wykorzystaniem anonimowych klas oraz bloków inicjalizacyjnych
 
-        Set<WorkStartFinishEventDto> eventDtoSet = workEventMapper.mapToEventsDto(
-                    new HashSet<WorkStartFinishEvent>()
+        Set<EmployeeAbsentDto> absentDtoSet = absentMapper.mapToAbsentsDto(
+                new HashSet<EmployeeAbsent>()
+                {
                     {
-                        {
-                            add(event);
-                        }
-                    });
+                        add(employeeAbsent);
+                    }
+                });
 
-        Assert.assertEquals("WorkStartFinishEventDto", eventDtoSet.stream()
+        // Then
+        Assert.assertEquals("EmployeeAbsentDto", absentDtoSet.stream()
                                                                   .findAny()
                                                                   .orElseThrow( () -> new NoSuchElementException())
                                                                   .getClass()
                                                                   .getSimpleName());
 
-        Assert.assertEquals("WorkStartFinishEventDto", mappedEvent.getClass().getSimpleName());
-        Assert.assertEquals(event.getId(), mappedEvent.getId());
+        Assert.assertEquals("EmployeeAbsentDto", mappedToDTO.getClass().getSimpleName());
+        Assert.assertEquals(employeeAbsent.getId(), mappedToDTO.getId());
 
-        Assert.assertEquals("WorkStartFinishEvent", mappedBackEvent.getClass().getSimpleName());
-        Assert.assertEquals(event.getId(), mappedBackEvent.getId());
-
-        Assert.assertEquals((Long) event.getEmployee().getId(), (Long) mappedEvent.getEmployeeDtoID());
+        Assert.assertEquals("EmployeeAbsent", mappedBack.getClass().getSimpleName());
+        Assert.assertEquals(employeeAbsent.getId(), mappedBack.getId());
     }
 }

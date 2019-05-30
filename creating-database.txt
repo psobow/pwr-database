@@ -1,4 +1,5 @@
 // \connect root@localhost
+// mysql -u root -p
 
 CREATE DATABASE IF NOT EXISTS pwrDB;
 CREATE USER IF NOT EXISTS 'pwruser'@'localhost' IDENTIFIED BY 'pwruser';

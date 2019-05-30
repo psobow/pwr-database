@@ -11,6 +11,11 @@ public class AbsentService
 {
     @Autowired private EmployeeAbsentDao repository;
 
+    public Long count()
+    {
+        return repository.count();
+    }
+
     public Set<EmployeeAbsent> findAll()
     {
         return repository.findAll();
