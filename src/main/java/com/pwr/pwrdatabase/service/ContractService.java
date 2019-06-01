@@ -33,11 +33,20 @@ public class ContractService
 
     public EmploymentContract save(final EmploymentContract CONTRACT)
     {
+        if (CONTRACT == null)
+        {
+            throw new IllegalArgumentException("Contract is null.");
+        }
         return repository.save(CONTRACT);
     }
 
     public void delete(final EmploymentContract CONTRACT)
     {
+        if (CONTRACT == null)
+        {
+            throw new IllegalArgumentException("Contract is null.");
+        }
+
         if (CONTRACT.getEmployees().size() != 0)
         {
             throw new IllegalArgumentException("Invalid contract. Can not delete contract with related employees.");
@@ -47,7 +56,7 @@ public class ContractService
 
     public void delete(final Long ID)
     {
-        EmploymentContract contractFromDatabase = this.repository.findOne(ID);
+        EmploymentContract contractFromDatabase = repository.findOne(ID);
         this.delete(contractFromDatabase);
     }
 }

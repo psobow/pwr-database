@@ -33,11 +33,20 @@ public class DepartmentService
 
     public Department save(final Department DEPARTMENT)
     {
+        if (DEPARTMENT == null)
+        {
+            throw new IllegalArgumentException("Department is null.");
+        }
         return repository.save(DEPARTMENT);
     }
 
     public void delete(final Department DEPARTMENT)
     {
+        if (DEPARTMENT == null)
+        {
+            throw new IllegalArgumentException("Department is null.");
+        }
+
         if (DEPARTMENT.getEmployees().size() != 0)
         {
             throw new IllegalArgumentException("Invalid department. Can not delete department with related employees.");
@@ -47,7 +56,7 @@ public class DepartmentService
 
     public void delete(final Long ID)
     {
-        Department departmentFromDatabase = this.repository.findOne(ID);
+        Department departmentFromDatabase = repository.findOne(ID);
         this.delete(departmentFromDatabase);
     }
 }

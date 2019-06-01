@@ -31,12 +31,40 @@ public class AbsentService
         return repository.findOne(ID);
     }
 
-    public EmployeeAbsent save(final EmployeeAbsent absent)
+    public EmployeeAbsent save(final EmployeeAbsent ABSENT)
     {
-        if (absent.getEmployee() == null)
+        if (ABSENT == null)
+        {
+            throw new IllegalArgumentException("Absent is null.");
+        }
+
+        if (ABSENT.getEmployee() == null)
         {
             throw new IllegalArgumentException("Invalid absent. Can not persist Absent without Employee.");
         }
-        return repository.save(absent);
+        return repository.save(ABSENT);
+    }
+
+    public void delete(final EmployeeAbsent ABSENT)
+    {
+        if (ABSENT == null)
+        {
+            throw new IllegalArgumentException("Absent is null.");
+        }
+        if (repository.findOne(ABSENT.getId()) == null)
+        {
+            throw new IllegalArgumentException("Absent with ID: " + ABSENT.getId() + " does not exist in database.");
+        }
+
+        // Break relation Employee - Absent
+        ABSENT.getEmployee().getEmployeeAbsents().remove(ABSENT);
+
+        repository.delete(ABSENT.getId());
+    }
+
+    public void delete(final Long ID)
+    {
+        EmployeeAbsent absent = repository.findOne(ID);
+        delete(absent);
     }
 }

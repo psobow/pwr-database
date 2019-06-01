@@ -32,7 +32,7 @@ public class EmployeeServiceTest
         employee.setFirstName("Patryk");
         employee.setSecondName("Tak");
         employee.setPESEL("12345678901");
-        employee.setPhoneNumber("489 090 787");
+        employee.setPhoneNumber("489090787");
         employee.setHireDate(LocalDate.now());
 
         employeeService.saveAndRefreshAllOtherEntities(employee);
@@ -52,7 +52,7 @@ public class EmployeeServiceTest
         employee.setFirstName("Patryk");
         employee.setSecondName("Tak");
         employee.setPESEL("12345678901");
-        employee.setPhoneNumber("489 090 787");
+        employee.setPhoneNumber("489090787");
         employee.setHireDate(LocalDate.now());
 
         // Set fields responsible for foreign keys
@@ -74,7 +74,7 @@ public class EmployeeServiceTest
         employee.setFirstName("Patryk");
         employee.setSecondName("Tak");
         employee.setPESEL("12345678901");
-        employee.setPhoneNumber("489 090 787");
+        employee.setPhoneNumber("489090787");
         employee.setHireDate(LocalDate.now());
 
         // Set fields responsible for foreign keys
@@ -109,7 +109,7 @@ public class EmployeeServiceTest
         employee.setFirstName("Patryk");
         employee.setSecondName("Tak");
         employee.setPESEL("12345678901");
-        employee.setPhoneNumber("489 090 787");
+        employee.setPhoneNumber("489090787");
         employee.setHireDate(LocalDate.now());
 
         // Set fields responsible for foreign keys
@@ -180,14 +180,14 @@ public class EmployeeServiceTest
         employee.setFirstName("Patryk");
         employee.setSecondName("Tak");
         employee.setPESEL("12345678901");
-        employee.setPhoneNumber("489 090 787");
+        employee.setPhoneNumber("489090787");
         employee.setHireDate(LocalDate.now());
 
         Employee employee2 = new Employee();
         employee2.setFirstName("Patryk");
         employee2.setSecondName("NIE");
         employee2.setPESEL("12345678901");
-        employee2.setPhoneNumber("489 090 787");
+        employee2.setPhoneNumber("489090787");
         employee2.setHireDate(LocalDate.now());
 
         // Set fields responsible for foreign keys

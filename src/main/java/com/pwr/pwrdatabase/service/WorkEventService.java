@@ -31,12 +31,39 @@ public class WorkEventService
         return repository.findOne(ID);
     }
 
-    public WorkStartFinishEvent save(final WorkStartFinishEvent event)
+    public WorkStartFinishEvent save(final WorkStartFinishEvent EVENT)
     {
-        if (event.getEmployee() == null)
+        if (EVENT == null)
+        {
+            throw new IllegalArgumentException("Event is null.");
+        }
+        if (EVENT.getEmployee() == null)
         {
             throw new IllegalArgumentException("Invalid event. Can not persist event without Employee.");
         }
-        return repository.save(event);
+        return repository.save(EVENT);
+    }
+
+    public void delete(final WorkStartFinishEvent EVENT)
+    {
+        if (EVENT == null)
+        {
+            throw new IllegalArgumentException("Event is null.");
+        }
+        if(repository.findOne(EVENT.getId()) == null)
+        {
+            throw new IllegalArgumentException("Event with ID: " + EVENT.getId() + " does not exist in database.");
+        }
+
+        // Break relation Employee - Event
+        EVENT.getEmployee().getWorkStartFinishEvents().remove(EVENT);
+
+        repository.delete(EVENT.getId());
+    }
+
+    public void delete(final Long ID)
+    {
+        WorkStartFinishEvent event = repository.findOne(ID);
+        delete(event);
     }
 }

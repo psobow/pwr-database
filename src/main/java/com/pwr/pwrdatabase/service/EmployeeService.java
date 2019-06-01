@@ -5,7 +5,6 @@ import com.pwr.pwrdatabase.domain.Employee;
 import com.pwr.pwrdatabase.domain.dao.EmployeeDao;
 import java.util.Iterator;
 import java.util.Set;
-import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,10 +35,31 @@ public class EmployeeService
 
     public Employee saveAndRefreshAllOtherEntities(final Employee EMPLOYEE)
     {
-        if (EMPLOYEE.getEmploymentContract() == null ||
-            EMPLOYEE.getDepartments().size() == 0)
+        if (EMPLOYEE == null)
         {
-            throw new IllegalArgumentException("Invalid employee. can not persist employee without Contract or Department.");
+            throw new IllegalArgumentException("Employee is null.");
+        }
+
+        String exceptionMessage = "Invalid employee. Caused by:";
+        if (EMPLOYEE.getEmploymentContract() == null)
+        {
+            exceptionMessage += " Invalid Employment Contract (null)";
+        }
+
+        if (EMPLOYEE.getDepartments().size() == 0)
+        {
+            exceptionMessage += " Invalid Departments (size 0)";
+        }
+
+        if (EMPLOYEE.getPhoneNumber().matches("^[0-9]*$") == false
+                         || EMPLOYEE.getPhoneNumber().length() < 9)
+        {
+            exceptionMessage += " Invalid phone number";
+        }
+
+        if (exceptionMessage.equals("Invalid employee. Caused by:") == false)
+        {
+            throw new IllegalArgumentException(exceptionMessage);
         }
         return repository.save(EMPLOYEE);
     }
@@ -47,6 +67,15 @@ public class EmployeeService
 
     public void delete(final Employee EMPLOYEE)
     {
+        if (EMPLOYEE == null)
+        {
+            throw new IllegalArgumentException("Employee is null.");
+        }
+        if (repository.findOne(EMPLOYEE.getId()) == null)
+        {
+            throw new IllegalArgumentException("Employee with ID: " + EMPLOYEE.getId() + "does not exist in database.");
+        }
+
         // Break relation Employee - Contract
         EMPLOYEE.getEmploymentContract().getEmployees().remove(EMPLOYEE);
         EMPLOYEE.setEmploymentContract(null);
@@ -70,7 +99,7 @@ public class EmployeeService
 
     public void delete(final Long ID)
     {
-        Employee employeeFromDatabase = this.repository.findOne(ID);
+        Employee employeeFromDatabase = repository.findOne(ID);
         this.delete(employeeFromDatabase);
     }
 
