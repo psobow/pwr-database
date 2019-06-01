@@ -5,7 +5,6 @@ import com.pwr.pwrdatabase.domain.EmploymentContract;
 import com.pwr.pwrdatabase.domain.WorkStartFinishEvent;
 import com.pwr.pwrdatabase.dto.WorkStartFinishEventDto;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -44,7 +43,8 @@ public class WorkEventMapperTest
         employee.setHireDate(LocalDate.now());
 
         WorkStartFinishEvent event = new WorkStartFinishEvent();
-        event.setEventDateTime(LocalDateTime.now());
+        event.setEventDate(LocalDate.now());
+        event.setEventTime(LocalTime.now());
         event.setBeginning(true);
 
         // Set fields responsible for foreign keys

@@ -55,7 +55,7 @@ public class Employee
     @Column(length = 11)
     @NotNull private String PESEL;
     @NotNull private String phoneNumber;
-    @NotNull private LocalDate hireDate;
+    @Column(updatable = false) @NotNull private LocalDate hireDate;
     @NotNull private int currentHolidays;
     @NotNull private boolean active = true;
 

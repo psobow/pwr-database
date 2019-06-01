@@ -1,6 +1,8 @@
 package com.pwr.pwrdatabase.domain.dao;
 
+import com.pwr.pwrdatabase.domain.Employee;
 import com.pwr.pwrdatabase.domain.WorkStartFinishEvent;
+import java.time.LocalDate;
 import java.util.Set;
 import javax.transaction.Transactional;
 import org.springframework.data.repository.CrudRepository;
@@ -15,4 +17,6 @@ public interface WorkStartFinishEventDao extends CrudRepository<WorkStartFinishE
 
     @Override
     Set<WorkStartFinishEvent> findAll(Iterable<Long> IDs);
+
+    Set<WorkStartFinishEvent> findAllByEmployeeAndEventDate(final Employee employee, final LocalDate eventDate);
 }

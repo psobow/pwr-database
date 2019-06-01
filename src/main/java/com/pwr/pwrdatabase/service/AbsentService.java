@@ -1,7 +1,10 @@
 package com.pwr.pwrdatabase.service;
 
+import com.pwr.pwrdatabase.domain.Employee;
 import com.pwr.pwrdatabase.domain.EmployeeAbsent;
 import com.pwr.pwrdatabase.domain.dao.EmployeeAbsentDao;
+import com.pwr.pwrdatabase.domain.dao.EmployeeDao;
+import java.time.LocalDate;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class AbsentService
 {
     @Autowired private EmployeeAbsentDao repository;
+    @Autowired private EmployeeDao employeeRepository;
 
     public Long count()
     {
@@ -41,6 +45,20 @@ public class AbsentService
         if (ABSENT.getEmployee() == null)
         {
             throw new IllegalArgumentException("Invalid absent. Can not persist Absent without Employee.");
+        }
+
+        if (ABSENT.getAbsentStartDate().isBefore(LocalDate.now()))
+        {
+            throw new IllegalArgumentException("Can not persist Absent with start date before " + LocalDate.now().toString());
+        }
+        if (ABSENT.getAbsentDurationInDays() <= 0)
+        {
+            throw new IllegalArgumentException("Can not persist absent with non-positive duration date.");
+        }
+        Employee employee = employeeRepository.findOne(ABSENT.getEmployee().getId());
+        if (ABSENT.getAbsentDurationInDays() > employee.getCurrentHolidays())
+        {
+            throw new IllegalArgumentException("Can not persist absent with duration exceeding current holidays.");
         }
         return repository.save(ABSENT);
     }

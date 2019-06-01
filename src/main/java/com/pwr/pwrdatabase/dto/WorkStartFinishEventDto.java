@@ -1,6 +1,7 @@
 package com.pwr.pwrdatabase.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -14,13 +15,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode (exclude = "id")
+@EqualsAndHashCode(exclude = {"id", "eventTime"})
 public class WorkStartFinishEventDto
 {
     @Id
     @NotNull private long id;
 
-    @NotNull private LocalDateTime eventDateTime;
+    @NotNull private LocalDate eventDate;
+    @NotNull private LocalTime eventTime;
     @NotNull private boolean beginning;
 
     // Foreign Keys

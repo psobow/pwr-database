@@ -19,7 +19,8 @@ public class WorkEventMapper
     {
         Employee employeeFromDatabase = this.EMPLOYEE_SERVICE.findOne(EVENT_DTO.getEmployeeDtoID());
         return new WorkStartFinishEvent(EVENT_DTO.getId(),
-                                        EVENT_DTO.getEventDateTime(),
+                                        EVENT_DTO.getEventDate(),
+                                        EVENT_DTO.getEventTime(),
                                         EVENT_DTO.isBeginning(),
                                         employeeFromDatabase);
     }
@@ -28,7 +29,8 @@ public class WorkEventMapper
     {
         Long employeeID = EVENT.getEmployee().getId();
         return new WorkStartFinishEventDto(EVENT.getId(),
-                                           EVENT.getEventDateTime(),
+                                           EVENT.getEventDate(),
+                                           EVENT.getEventTime(),
                                            EVENT.isBeginning(),
                                            employeeID);
     }

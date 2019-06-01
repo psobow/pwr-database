@@ -1,6 +1,7 @@
 package com.pwr.pwrdatabase.domain;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +21,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = "id")
+@EqualsAndHashCode(exclude = {"id", "eventTime"})
 public class WorkStartFinishEvent
 {
     @Id
@@ -28,7 +29,8 @@ public class WorkStartFinishEvent
     @Column(updatable = false, unique = true)
     @NotNull private long id;
 
-    @NotNull private LocalDateTime eventDateTime;
+    @NotNull private LocalDate eventDate;
+    @NotNull private LocalTime eventTime;
     @NotNull private boolean beginning;
 
     // Foreign Keys

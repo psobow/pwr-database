@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 public class ContractService
 {
     @Autowired private EmploymentContractDao repository;
+    private final double MINIMAL_HOUR_PAY = 10.0;
+    private final int MINIMAL_QUANTITY_OF_FULL_WORK_DAYS_FOR_ONE_HOLIDAY = 10;
 
     public Long count()
     {
@@ -36,6 +38,14 @@ public class ContractService
         if (CONTRACT == null)
         {
             throw new IllegalArgumentException("Contract is null.");
+        }
+        if(CONTRACT.getHourPay() < MINIMAL_HOUR_PAY)
+        {
+            throw new IllegalArgumentException("Invalid contract. Hour pay is to low.");
+        }
+        if(CONTRACT.getQuantityOfFullWorkDaysForOneHoliday() < MINIMAL_QUANTITY_OF_FULL_WORK_DAYS_FOR_ONE_HOLIDAY )
+        {
+            throw new IllegalArgumentException("Invalid contract. Quantity of full work days for one holiday is to low.");
         }
         return repository.save(CONTRACT);
     }

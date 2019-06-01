@@ -3,6 +3,7 @@ package com.pwr.pwrdatabase.service;
 import com.pwr.pwrdatabase.domain.Department;
 import com.pwr.pwrdatabase.domain.Employee;
 import com.pwr.pwrdatabase.domain.dao.EmployeeDao;
+import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ public class EmployeeService
         }
 
         String exceptionMessage = "Invalid employee. Caused by:";
+
         if (EMPLOYEE.getEmploymentContract() == null)
         {
             exceptionMessage += " Invalid Employment Contract (null)";
@@ -51,17 +53,33 @@ public class EmployeeService
             exceptionMessage += " Invalid Departments (size 0)";
         }
 
+        if (EMPLOYEE.getFirstName().chars().allMatch(Character::isLetter) == false ||
+            EMPLOYEE.getSecondName().chars().allMatch(Character::isLetter) == false)
+        {
+            exceptionMessage += " First name and second name can not contain digit";
+        }
+
+        if (EMPLOYEE.getHireDate().isBefore(LocalDate.now()))
+        {
+            exceptionMessage += " Hire date can not be set before :" + LocalDate.now();
+        }
+
         if (EMPLOYEE.getPhoneNumber().matches("^[0-9]*$") == false
                          || EMPLOYEE.getPhoneNumber().length() < 9)
         {
             exceptionMessage += " Invalid phone number";
         }
 
+        if (EMPLOYEE.getCurrentHolidays() < 0)
+        {
+            exceptionMessage += " non-positive current holidays";
+        }
+
         if (exceptionMessage.equals("Invalid employee. Caused by:") == false)
         {
             throw new IllegalArgumentException(exceptionMessage);
         }
-        return repository.save(EMPLOYEE);
+        return repository.save(EMPLOYEE); // Ta metoda prawdopodobnie zupdate'uje Absent, Report, Event pomijając logike z ich serwisów
     }
 
 

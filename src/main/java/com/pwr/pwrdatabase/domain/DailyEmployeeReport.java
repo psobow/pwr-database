@@ -33,7 +33,7 @@ public class DailyEmployeeReport
     @NotNull private LocalTime workTime;
     @NotNull private double earnedCash;
     @NotNull private boolean lateness;
-    private LocalTime latenessTime;
+    private int latenessMinutes;
 
     // Foreign Keys
 

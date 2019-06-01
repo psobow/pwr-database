@@ -5,7 +5,6 @@ import com.pwr.pwrdatabase.domain.dao.EmployeeDao;
 import com.pwr.pwrdatabase.domain.dao.EmploymentContractDao;
 import com.pwr.pwrdatabase.domain.dao.WorkStartFinishEventDao;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
@@ -29,7 +28,8 @@ public class WorkStartFinishEventTest
     {
         // Given
         WorkStartFinishEvent event = new WorkStartFinishEvent();
-        event.setEventDateTime(LocalDateTime.now());
+        event.setEventDate(LocalDate.now());
+        event.setEventTime(LocalTime.now());
         event.setBeginning(true);
 
         EmploymentContract contract = new EmploymentContract();

@@ -47,7 +47,7 @@ public class ReportMapperTest
         report.setWorkTime(LocalTime.of(7, 50));
         report.setEarnedCash(100);
         report.setLateness(true);
-        report.setLatenessTime(LocalTime.of(0, 10));
+        report.setLatenessMinutes(10);
 
         // Set fields responsible for foreign keys
         employee.setEmploymentContract(contract);

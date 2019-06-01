@@ -23,7 +23,7 @@ public class ReportMapper
                                        REPORT_DTO.getWorkTime(),
                                        REPORT_DTO.getEarnedCash(),
                                        REPORT_DTO.isLateness(),
-                                       REPORT_DTO.getLatenessTime(),
+                                       REPORT_DTO.getLatenessMinutes(),
                                        employeeFromDatabase);
     }
 
@@ -35,7 +35,7 @@ public class ReportMapper
                                           REPORT.getWorkTime(),
                                           REPORT.getEarnedCash(),
                                           REPORT.isLateness(),
-                                          REPORT.getLatenessTime(),
+                                          REPORT.getLatenessMinutes(),
                                           employeeID);
     }
 

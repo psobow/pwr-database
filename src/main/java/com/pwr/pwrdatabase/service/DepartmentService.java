@@ -37,6 +37,10 @@ public class DepartmentService
         {
             throw new IllegalArgumentException("Department is null.");
         }
+        if (DEPARTMENT.getZipCode().matches("^[0-9]{2}(?:-[0-9]{4})?$"))
+        {
+            throw new IllegalArgumentException("Invalid department. Invalid zip-code.");
+        }
         return repository.save(DEPARTMENT);
     }
 

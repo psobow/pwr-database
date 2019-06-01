@@ -39,3 +39,7 @@ TODO: dokończyć implementowanie logiki w serwisach
 TODO: przetestować te serwisy
 TODO: wystawić controlery restowe
 TODO: dodać swaggera
+
+TODO: sprawdzić
+prawdopodobnie EmployeeService metoda save na samym końcu jak wywołujemy return repository.save(EMPLOYEE);
+no to Employee oraz Absent, Report oraz Event Cascadowo odświeży te trzy encje. oraz prawdopodobnie pominie logike zaimplementowaną w serwisach Absent, Report, Event.
