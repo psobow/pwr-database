@@ -46,7 +46,7 @@ public class EmployeeServiceTest
         contract.setHourPay(10.5);
         contract.setShiftBegin(LocalTime.now());
         contract.setShiftEnd(LocalTime.now());
-        contract.setQuantityOfFullWorkDaysForOneHoliday(10);
+        //contract.setQuantityOfFullWorkDaysForOneHoliday(10);
 
         Employee employee = new Employee();
         employee.setFirstName("Patryk");
@@ -93,7 +93,7 @@ public class EmployeeServiceTest
         contract.setHourPay(10.5);
         contract.setShiftBegin(LocalTime.now());
         contract.setShiftEnd(LocalTime.now());
-        contract.setQuantityOfFullWorkDaysForOneHoliday(10);
+        //contract.setQuantityOfFullWorkDaysForOneHoliday(10);
 
         Department department1 = new Department();
         department1.setCity("Warszawa");
@@ -169,7 +169,7 @@ public class EmployeeServiceTest
         contract.setHourPay(10.5);
         contract.setShiftBegin(LocalTime.now());
         contract.setShiftEnd(LocalTime.now());
-        contract.setQuantityOfFullWorkDaysForOneHoliday(10);
+        //contract.setQuantityOfFullWorkDaysForOneHoliday(10);
 
         Department department = new Department();
         department.setCity("Warszawa");

@@ -1,9 +1,7 @@
 package com.pwr.pwrdatabase.service;
 
-import com.pwr.pwrdatabase.domain.Employee;
 import com.pwr.pwrdatabase.domain.EmployeeAbsent;
 import com.pwr.pwrdatabase.domain.dao.EmployeeAbsentDao;
-import com.pwr.pwrdatabase.domain.dao.EmployeeDao;
 import java.time.LocalDate;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class AbsentService
 {
     @Autowired private EmployeeAbsentDao repository;
-    @Autowired private EmployeeDao employeeRepository;
+    private final int MAXIMUM_AMOUNT_OF_DAYS_FOR_TAKING_LEAVE_IN_ADVANCE = 10;
 
     public Long count()
     {
@@ -37,42 +35,25 @@ public class AbsentService
 
     public EmployeeAbsent save(final EmployeeAbsent ABSENT)
     {
-        if (ABSENT == null)
-        {
-            throw new IllegalArgumentException("Absent is null.");
-        }
+        checkIfAndThrowException(ABSENT == null, "Absent is null.");
+        checkIfAndThrowException(ABSENT.getEmployee() == null, "Invalid absent. Can not persist Absent without Employee.");
 
-        if (ABSENT.getEmployee() == null)
-        {
-            throw new IllegalArgumentException("Invalid absent. Can not persist Absent without Employee.");
-        }
+        checkIfAndThrowException(ABSENT.getAbsentStartDate().isBefore(LocalDate.now()),
+                                 "Invalid absent. Can not persist Absent with start date before " + LocalDate.now().toString());
 
-        if (ABSENT.getAbsentStartDate().isBefore(LocalDate.now()))
-        {
-            throw new IllegalArgumentException("Can not persist Absent with start date before " + LocalDate.now().toString());
-        }
-        if (ABSENT.getAbsentDurationInDays() <= 0)
-        {
-            throw new IllegalArgumentException("Can not persist absent with non-positive duration date.");
-        }
-        Employee employee = employeeRepository.findOne(ABSENT.getEmployee().getId());
-        if (ABSENT.getAbsentDurationInDays() > employee.getCurrentHolidays())
-        {
-            throw new IllegalArgumentException("Can not persist absent with duration exceeding current holidays.");
-        }
+        checkIfAndThrowException(ABSENT.getAbsentStartDate().isAfter(LocalDate.now().plusDays(MAXIMUM_AMOUNT_OF_DAYS_FOR_TAKING_LEAVE_IN_ADVANCE)),
+                                 "Invalid absent. Can not persist Absent with start date after " + MAXIMUM_AMOUNT_OF_DAYS_FOR_TAKING_LEAVE_IN_ADVANCE
+                                         + " days from " + LocalDate.now().toString());
+
+        checkIfAndThrowException(ABSENT.getAbsentDurationInDays() <= 0, "Invalid absent. Can not persist absent with non-positive duration date.");
+
         return repository.save(ABSENT);
     }
 
     public void delete(final EmployeeAbsent ABSENT)
     {
-        if (ABSENT == null)
-        {
-            throw new IllegalArgumentException("Absent is null.");
-        }
-        if (repository.findOne(ABSENT.getId()) == null)
-        {
-            throw new IllegalArgumentException("Absent with ID: " + ABSENT.getId() + " does not exist in database.");
-        }
+        checkIfAndThrowException(ABSENT == null, "Absent is null.");
+        checkIfAndThrowException(repository.findOne(ABSENT.getId()) == null, "Absent with ID: " + ABSENT.getId() + " does not exist in database.");
 
         // Break relation Employee - Absent
         ABSENT.getEmployee().getEmployeeAbsents().remove(ABSENT);
@@ -83,6 +64,17 @@ public class AbsentService
     public void delete(final Long ID)
     {
         EmployeeAbsent absent = repository.findOne(ID);
+        checkIfAndThrowException(absent == null, "Absent with ID: " + ID + " does not exist in database.");
         delete(absent);
+    }
+
+
+
+    private void checkIfAndThrowException(boolean b, String s)
+    {
+        if (b)
+        {
+            throw new IllegalArgumentException(s);
+        }
     }
 }

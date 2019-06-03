@@ -11,7 +11,6 @@ public class ContractService
 {
     @Autowired private EmploymentContractDao repository;
     private final double MINIMAL_HOUR_PAY = 10.0;
-    private final int MINIMAL_QUANTITY_OF_FULL_WORK_DAYS_FOR_ONE_HOLIDAY = 10;
 
     public Long count()
     {
@@ -35,38 +34,32 @@ public class ContractService
 
     public EmploymentContract save(final EmploymentContract CONTRACT)
     {
-        if (CONTRACT == null)
-        {
-            throw new IllegalArgumentException("Contract is null.");
-        }
-        if(CONTRACT.getHourPay() < MINIMAL_HOUR_PAY)
-        {
-            throw new IllegalArgumentException("Invalid contract. Hour pay is to low.");
-        }
-        if(CONTRACT.getQuantityOfFullWorkDaysForOneHoliday() < MINIMAL_QUANTITY_OF_FULL_WORK_DAYS_FOR_ONE_HOLIDAY )
-        {
-            throw new IllegalArgumentException("Invalid contract. Quantity of full work days for one holiday is to low.");
-        }
+        checkIfAndThrowException(CONTRACT == null, "Contract is null.");
+        checkIfAndThrowException(CONTRACT.getHourPay() < MINIMAL_HOUR_PAY, "Invalid contract. Hour pay is to low.");
+
         return repository.save(CONTRACT);
     }
 
     public void delete(final EmploymentContract CONTRACT)
     {
-        if (CONTRACT == null)
-        {
-            throw new IllegalArgumentException("Contract is null.");
-        }
-
-        if (CONTRACT.getEmployees().size() != 0)
-        {
-            throw new IllegalArgumentException("Invalid contract. Can not delete contract with related employees.");
-        }
+        checkIfAndThrowException(CONTRACT == null, "Contract is null.");
+        checkIfAndThrowException(repository.findOne(CONTRACT.getId()) == null, "Contract with ID: " + CONTRACT.getId() + " does not exist in database.");
+        checkIfAndThrowException(CONTRACT.getEmployees().size() != 0, "Invalid contract. Can not delete contract with related employees.");
         repository.delete(CONTRACT.getId());
     }
 
     public void delete(final Long ID)
     {
         EmploymentContract contractFromDatabase = repository.findOne(ID);
+        checkIfAndThrowException(contractFromDatabase == null, "Contract with ID: " + ID + " does not exist in database.");
         this.delete(contractFromDatabase);
+    }
+
+    private void checkIfAndThrowException(boolean b, String s)
+    {
+        if (b)
+        {
+            throw new IllegalArgumentException(s);
+        }
     }
 }

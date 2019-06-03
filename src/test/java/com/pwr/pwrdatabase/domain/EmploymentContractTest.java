@@ -29,7 +29,7 @@ public class EmploymentContractTest
         contract.setHourPay(10.5);
         contract.setShiftBegin(LocalTime.now());
         contract.setShiftEnd(LocalTime.now());
-        contract.setQuantityOfFullWorkDaysForOneHoliday(10);
+        //contract.setQuantityOfFullWorkDaysForOneHoliday(10);
 
         // Save size of entities
         long sizeOfContractBefore = employmentContractDao.count();
@@ -55,14 +55,14 @@ public class EmploymentContractTest
         contract1.setHourPay(10.5);
         contract1.setShiftBegin(LocalTime.now());
         contract1.setShiftEnd(LocalTime.now());
-        contract1.setQuantityOfFullWorkDaysForOneHoliday(10);
+        //contract1.setQuantityOfFullWorkDaysForOneHoliday(10);
 
         EmploymentContract contract2 = new EmploymentContract();
         contract2.setEmploymentType("Employment Type Two");
         contract2.setHourPay(20.5);
         contract2.setShiftBegin(LocalTime.now());
         contract2.setShiftEnd(LocalTime.now());
-        contract2.setQuantityOfFullWorkDaysForOneHoliday(20);
+        //contract2.setQuantityOfFullWorkDaysForOneHoliday(20);
 
         Employee employee = new Employee();
         employee.setFirstName("Patryk");
@@ -129,7 +129,7 @@ public class EmploymentContractTest
         contract1.setHourPay(10.5);
         contract1.setShiftBegin(LocalTime.now());
         contract1.setShiftEnd(LocalTime.now());
-        contract1.setQuantityOfFullWorkDaysForOneHoliday(10);
+        //contract1.setQuantityOfFullWorkDaysForOneHoliday(10);
 
         Employee employee = new Employee();
         employee.setFirstName("Patryk");

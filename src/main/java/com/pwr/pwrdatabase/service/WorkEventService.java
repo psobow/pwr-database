@@ -41,37 +41,25 @@ public class WorkEventService
 
     public WorkStartFinishEvent save(final WorkStartFinishEvent EVENT)
     {
-        if (EVENT == null)
-        {
-            throw new IllegalArgumentException("Event is null.");
-        }
-        if (EVENT.getEmployee() == null)
-        {
-            throw new IllegalArgumentException("Invalid event. Can not persist event without Employee.");
-        }
-        if (EVENT.getEventDate().isEqual(LocalDate.now()) == false)
-        {
-            throw new IllegalArgumentException("Invalid event. Can not persist event with day diffrent than today.");
-        }
+        checkIfAndThrowException(EVENT == null, "Event is null.");
+        checkIfAndThrowException(EVENT.getEmployee() == null, "Invalid event. Can not persist event without Employee.");
+
+        EVENT.setEventDate(LocalDate.now());
+        EVENT.setEventTime(LocalTime.now());
+
         Set<WorkStartFinishEvent> result = repository.findAllByEmployeeAndEventDate(EVENT.getEmployee(), EVENT.getEventDate());
-        if (result.size() == 0 && EVENT.isBeginning() == false)
-        {
-            throw new IllegalArgumentException("Invalid event. can not persist initial event with beginning == false");
-        }
-        if (result.size() == 1 && EVENT.isBeginning() == true)
-        {
-            throw new IllegalArgumentException("Invalid event. can not persist terminal event with beginning == true");
-        }
-        if (result.size() == 2)
-        {
-            throw new IllegalArgumentException("Can not persist more than two events for one day.");
-        }
+
+        checkIfAndThrowException(result.size() == 0 && EVENT.isBeginning() == false, "Invalid event. can not persist initial event with beginning == false");
+
+        checkIfAndThrowException(result.size() == 1 && EVENT.isBeginning() == true, "Invalid event. can not persist terminal event with beginning == true");
+
+        checkIfAndThrowException(result.size() == 2, "Can not persist more than two events for one day.");
 
         if (result.size() == 1 && EVENT.isBeginning() == false)
         {
-            // Persist Report with ReportService
+            // Persist Report
             DailyEmployeeReport report = new DailyEmployeeReport();
-            report.setReportDate(EVENT.getEventDate());
+            report.setReportDate(LocalDate.now());
 
             // Calculate work time
             WorkStartFinishEvent initialEvent = result.stream().findFirst().orElseThrow(() -> new NoSuchElementException());
@@ -107,12 +95,17 @@ public class WorkEventService
         return repository.save(EVENT);
     }
 
+    private void checkIfAndThrowException(boolean b, String s)
+    {
+        if (b)
+        {
+            throw new IllegalArgumentException(s);
+        }
+    }
+
     public void delete(final WorkStartFinishEvent EVENT)
     {
-        if (EVENT == null)
-        {
-            throw new IllegalArgumentException("Event is null.");
-        }
+        checkIfAndThrowException(EVENT == null, "Event is null.");
         if(repository.findOne(EVENT.getId()) == null)
         {
             throw new IllegalArgumentException("Event with ID: " + EVENT.getId() + " does not exist in database.");

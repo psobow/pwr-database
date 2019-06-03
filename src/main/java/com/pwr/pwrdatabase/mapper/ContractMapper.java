@@ -6,6 +6,7 @@ import com.pwr.pwrdatabase.dto.EmploymentContractDto;
 import com.pwr.pwrdatabase.service.EmployeeService;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +24,7 @@ public class ContractMapper
                                       CONTRACT_DTO.getHourPay(),
                                       CONTRACT_DTO.getShiftBegin(),
                                       CONTRACT_DTO.getShiftEnd(),
-                                      CONTRACT_DTO.getQuantityOfFullWorkDaysForOneHoliday(),
+                                      //CONTRACT_DTO.getQuantityOfFullWorkDaysForOneHoliday(),
                                       employeesFromDatabase);
     }
 
@@ -36,7 +37,21 @@ public class ContractMapper
                                          CONTRACT.getHourPay(),
                                          CONTRACT.getShiftBegin(),
                                          CONTRACT.getShiftEnd(),
-                                         CONTRACT.getQuantityOfFullWorkDaysForOneHoliday(),
+                                         //CONTRACT.getQuantityOfFullWorkDaysForOneHoliday(),
                                          employeesID);
+    }
+
+    public Set<EmploymentContract> mapToContracts(final Set<EmploymentContractDto> CONTRACTS_DTO)
+    {
+        return CONTRACTS_DTO.stream()
+                            .map(this::mapToContract)
+                            .collect(Collectors.toSet());
+    }
+
+    public Set<EmploymentContractDto> mapToContractsDto(final Set<EmploymentContract> CONTRACTS)
+    {
+        return CONTRACTS.stream()
+                        .map(this::mapToContractDto)
+                        .collect(Collectors.toSet());
     }
 }

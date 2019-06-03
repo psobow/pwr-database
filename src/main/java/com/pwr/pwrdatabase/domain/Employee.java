@@ -32,7 +32,7 @@ import org.hibernate.annotations.LazyCollectionOption;
         "id",
         "phoneNumber",
         "hireDate",
-        "currentHolidays",
+        //"currentHolidays",
         "active",
         "employmentContract",
         "workStartFinishEvents",
@@ -55,8 +55,8 @@ public class Employee
     @Column(length = 11)
     @NotNull private String PESEL;
     @NotNull private String phoneNumber;
-    @Column(updatable = false) @NotNull private LocalDate hireDate;
-    @NotNull private int currentHolidays;
+    @NotNull private LocalDate hireDate;
+    //@NotNull private int currentHolidays;
     @NotNull private boolean active = true;
 
     // Foreign Keys

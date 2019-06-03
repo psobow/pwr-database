@@ -36,63 +36,45 @@ public class EmployeeService
 
     public Employee saveAndRefreshAllOtherEntities(final Employee EMPLOYEE)
     {
-        if (EMPLOYEE == null)
+        checkIfAndThrowException(EMPLOYEE == null, "Employee is null.");
+
+        checkIfAndThrowException(EMPLOYEE.getEmploymentContract() == null,
+                                 "Invalid employee. Invalid Employment Contract (null)");
+
+        checkIfAndThrowException(EMPLOYEE.getDepartments().size() == 0, "Invalid employee. Departments size 0");
+
+        checkIfAndThrowException(EMPLOYEE.getFirstName().chars().allMatch(Character::isLetter) == false
+                                 || EMPLOYEE.getSecondName().chars().allMatch(Character::isLetter) == false,
+                                 "Invalid employee. First name and second name can not contain digits");
+
+        if (repository.findOne(EMPLOYEE.getId()) == null)
         {
-            throw new IllegalArgumentException("Employee is null.");
+            checkIfAndThrowException(EMPLOYEE.getHireDate().isEqual(LocalDate.now()) == false,
+                                     "Invalid employee. Hire date can not be diffrent than " + LocalDate.now());
         }
 
-        String exceptionMessage = "Invalid employee. Caused by:";
+        checkIfAndThrowException(EMPLOYEE.getPhoneNumber().matches("^[0-9]*$") == false
+                                 || EMPLOYEE.getPhoneNumber().length() < 9,
+                                 "Invalid employee. Invalid phone number");
 
-        if (EMPLOYEE.getEmploymentContract() == null)
-        {
-            exceptionMessage += " Invalid Employment Contract (null)";
-        }
 
-        if (EMPLOYEE.getDepartments().size() == 0)
-        {
-            exceptionMessage += " Invalid Departments (size 0)";
-        }
-
-        if (EMPLOYEE.getFirstName().chars().allMatch(Character::isLetter) == false ||
-            EMPLOYEE.getSecondName().chars().allMatch(Character::isLetter) == false)
-        {
-            exceptionMessage += " First name and second name can not contain digit";
-        }
-
-        if (EMPLOYEE.getHireDate().isBefore(LocalDate.now()))
-        {
-            exceptionMessage += " Hire date can not be set before :" + LocalDate.now();
-        }
-
-        if (EMPLOYEE.getPhoneNumber().matches("^[0-9]*$") == false
-                         || EMPLOYEE.getPhoneNumber().length() < 9)
-        {
-            exceptionMessage += " Invalid phone number";
-        }
-
-        if (EMPLOYEE.getCurrentHolidays() < 0)
-        {
-            exceptionMessage += " non-positive current holidays";
-        }
-
-        if (exceptionMessage.equals("Invalid employee. Caused by:") == false)
-        {
-            throw new IllegalArgumentException(exceptionMessage);
-        }
         return repository.save(EMPLOYEE); // Ta metoda prawdopodobnie zupdate'uje Absent, Report, Event pomijając logike z ich serwisów
+        // ponieważ encja Employee ma CascadeType refresh do wszstkich pozostałych encji.
+    }
+
+    private void checkIfAndThrowException(boolean b, String s)
+    {
+        if (b)
+        {
+            throw new IllegalArgumentException(s);
+        }
     }
 
 
     public void delete(final Employee EMPLOYEE)
     {
-        if (EMPLOYEE == null)
-        {
-            throw new IllegalArgumentException("Employee is null.");
-        }
-        if (repository.findOne(EMPLOYEE.getId()) == null)
-        {
-            throw new IllegalArgumentException("Employee with ID: " + EMPLOYEE.getId() + "does not exist in database.");
-        }
+        checkIfAndThrowException(EMPLOYEE == null, "Employee is null.");
+        checkIfAndThrowException(repository.findOne(EMPLOYEE.getId()) == null, "Employee with ID: " + EMPLOYEE.getId() + "does not exist in database.");
 
         // Break relation Employee - Contract
         EMPLOYEE.getEmploymentContract().getEmployees().remove(EMPLOYEE);
@@ -118,6 +100,7 @@ public class EmployeeService
     public void delete(final Long ID)
     {
         Employee employeeFromDatabase = repository.findOne(ID);
+        checkIfAndThrowException(employeeFromDatabase == null, "Employee with ID: " + ID + "does not exist in database.");
         this.delete(employeeFromDatabase);
     }
 

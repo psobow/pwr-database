@@ -29,7 +29,7 @@ public class EmployeeTest
         contract.setHourPay(10.5);
         contract.setShiftBegin(LocalTime.now());
         contract.setShiftEnd(LocalTime.now());
-        contract.setQuantityOfFullWorkDaysForOneHoliday(10);
+        //contract.setQuantityOfFullWorkDaysForOneHoliday(10);
 
         // Save size of entities
         long initSizeOfContract = employmentContractDao.count();

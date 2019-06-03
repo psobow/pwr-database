@@ -33,34 +33,33 @@ public class DepartmentService
 
     public Department save(final Department DEPARTMENT)
     {
-        if (DEPARTMENT == null)
-        {
-            throw new IllegalArgumentException("Department is null.");
-        }
-        if (DEPARTMENT.getZipCode().matches("^[0-9]{2}(?:-[0-9]{4})?$"))
-        {
-            throw new IllegalArgumentException("Invalid department. Invalid zip-code.");
-        }
+        checkIfAndThrowException(DEPARTMENT == null, "Department is null.");
+        checkIfAndThrowException(DEPARTMENT.getZipCode().matches("^[0-9]{2}(?:-[0-9]{3})?$") == false,
+                                 "Invalid department. Invalid zip-code.");
         return repository.save(DEPARTMENT);
     }
 
     public void delete(final Department DEPARTMENT)
     {
-        if (DEPARTMENT == null)
-        {
-            throw new IllegalArgumentException("Department is null.");
-        }
+        checkIfAndThrowException(DEPARTMENT == null, "Department is null.");
+        checkIfAndThrowException(repository.findOne(DEPARTMENT.getId()) == null, "Department with ID: " + DEPARTMENT.getId() + " does not exist in database.");
+        checkIfAndThrowException(DEPARTMENT.getEmployees().size() != 0, "Invalid department. Can not delete department with related employees.");
 
-        if (DEPARTMENT.getEmployees().size() != 0)
-        {
-            throw new IllegalArgumentException("Invalid department. Can not delete department with related employees.");
-        }
         repository.delete(DEPARTMENT.getId());
     }
 
     public void delete(final Long ID)
     {
         Department departmentFromDatabase = repository.findOne(ID);
+        checkIfAndThrowException(departmentFromDatabase == null, "Department with ID: " + ID + " does not exist in database.");
         this.delete(departmentFromDatabase);
+    }
+
+    private void checkIfAndThrowException(boolean b, String s)
+    {
+        if (b)
+        {
+            throw new IllegalArgumentException(s);
+        }
     }
 }

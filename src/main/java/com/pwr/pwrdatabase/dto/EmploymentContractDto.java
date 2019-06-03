@@ -26,7 +26,7 @@ public class EmploymentContractDto
     @NotNull private double hourPay;
     @NotNull private LocalTime shiftBegin;
     @NotNull private LocalTime shiftEnd;
-    @NotNull private int quantityOfFullWorkDaysForOneHoliday;
+    //@NotNull private int quantityOfFullWorkDaysForOneHoliday;
 
     // Foreign Keys
 

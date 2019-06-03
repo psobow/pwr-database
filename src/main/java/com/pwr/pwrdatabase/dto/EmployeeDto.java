@@ -20,7 +20,7 @@ import lombok.Setter;
         "id",
         "phoneNumber",
         "hireDate",
-        "currentHolidays",
+        //"currentHolidays",
         "active",
         "employmentContractDtoID",
         "workStartFinishEventsID",
@@ -38,7 +38,7 @@ public class EmployeeDto
 
     @NotNull private String phoneNumber;
     @NotNull private LocalDate hireDate;
-    @NotNull private int currentHolidays;
+    //@NotNull private int currentHolidays;
     @NotNull private boolean active = true;
 
     // Foreign Keys

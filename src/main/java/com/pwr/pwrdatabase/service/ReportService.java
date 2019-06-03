@@ -33,27 +33,25 @@ public class ReportService
 
     public DailyEmployeeReport save(final DailyEmployeeReport REPORT)
     {
-        if (REPORT == null)
-        {
-            throw new IllegalArgumentException("Report is null.");
-        }
-        if (REPORT.getEmployee() == null)
-        {
-            throw new IllegalArgumentException("Invalid report. Can not persist Report without Employee.");
-        }
+        checkIfAndThrowException(REPORT == null, "Report is null.");
+        checkIfAndThrowException(REPORT.getEmployee() == null,
+                                 "Invalid report. Can not persist Report without Employee.");
         return repository.save(REPORT);
+    }
+
+    private void checkIfAndThrowException(boolean b, String s)
+    {
+        if (b)
+        {
+            throw new IllegalArgumentException(s);
+        }
     }
 
     public void delete(final DailyEmployeeReport REPORT)
     {
-        if (REPORT == null)
-        {
-            throw new IllegalArgumentException("Report is null.");
-        }
-        if (repository.findOne(REPORT.getId()) == null)
-        {
-            throw new IllegalArgumentException("Report with ID: " + REPORT.getId() + " doest not exist in database.");
-        }
+        checkIfAndThrowException(REPORT == null, "Report is null.");
+        checkIfAndThrowException(repository.findOne(REPORT.getId()) == null, "Report with ID: " + REPORT.getId() + " doest not exist in database.");
+
 
         // Break relation Employee - Report
         REPORT.getEmployee().getDailyEmployeeReports().remove(REPORT);
@@ -64,6 +62,7 @@ public class ReportService
     public void delete(final Long ID)
     {
         DailyEmployeeReport report = repository.findOne(ID);
+        checkIfAndThrowException(report == null, "Report with ID: " + ID + " doest not exist in database.");
         delete(report);
     }
 }
