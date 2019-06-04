@@ -21,7 +21,7 @@ public class WorkEventMapper
         return new WorkStartFinishEvent(EVENT_DTO.getId(),
                                         EVENT_DTO.getEventDate(),
                                         EVENT_DTO.getEventTime(),
-                                        EVENT_DTO.isBeginning(),
+                                        EVENT_DTO.getBeginning(),
                                         employeeFromDatabase);
     }
 

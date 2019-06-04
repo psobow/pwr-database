@@ -2,7 +2,9 @@ package com.pwr.pwrdatabase.service;
 
 import com.pwr.pwrdatabase.domain.DailyEmployeeReport;
 import com.pwr.pwrdatabase.domain.Employee;
+import com.pwr.pwrdatabase.domain.EmployeeAbsent;
 import com.pwr.pwrdatabase.domain.WorkStartFinishEvent;
+import com.pwr.pwrdatabase.domain.dao.EmployeeAbsentDao;
 import com.pwr.pwrdatabase.domain.dao.WorkStartFinishEventDao;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class WorkEventService
 {
     @Autowired private WorkStartFinishEventDao repository;
+    @Autowired private EmployeeAbsentDao absentRepository;
     @Autowired private ReportService reportService;
     @Autowired private EmployeeService employeeService;
 
@@ -43,6 +46,19 @@ public class WorkEventService
     {
         checkIfAndThrowException(EVENT == null, "Event is null.");
         checkIfAndThrowException(EVENT.getEmployee() == null, "Invalid event. Can not persist event without Employee.");
+
+        Set<EmployeeAbsent> absents = absentRepository.findAllByEmployee(EVENT.getEmployee());
+        boolean result2 = false;
+        for (EmployeeAbsent a : absents)
+        {
+            if (LocalDate.now().isAfter(a.getAbsentStartDate()) && LocalDate.now().isBefore(a.getAbsentStartDate().plusDays(a.getAbsentDurationInDays())))
+            {
+                result2 = true;
+            }
+        }
+        checkIfAndThrowException(result2, "Employee on leave can not start work.");
+
+
 
         EVENT.setEventDate(LocalDate.now());
         EVENT.setEventTime(LocalTime.now());

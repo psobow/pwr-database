@@ -19,7 +19,7 @@ import lombok.Setter;
 public class DepartmentDto
 {
     @Id
-    @NotNull private long id;
+    @NotNull private Long id;
 
     @NotNull private String city;
     @NotNull private String zipCode;

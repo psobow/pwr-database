@@ -1,5 +1,6 @@
 package com.pwr.pwrdatabase.domain.dao;
 
+import com.pwr.pwrdatabase.domain.Employee;
 import com.pwr.pwrdatabase.domain.EmployeeAbsent;
 import java.util.Set;
 import javax.transaction.Transactional;
@@ -16,4 +17,6 @@ public interface EmployeeAbsentDao extends CrudRepository<EmployeeAbsent, Long>
 
     @Override
     Set<EmployeeAbsent> findAll(Iterable<Long> IDs);
+
+    Set<EmployeeAbsent> findAllByEmployee(final Employee employee);
 }

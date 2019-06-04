@@ -29,8 +29,8 @@ public class WorkStartFinishEvent
     @Column(updatable = false, unique = true)
     @NotNull private long id;
 
-    @NotNull private LocalDate eventDate;
-    @NotNull private LocalTime eventTime;
+    private LocalDate eventDate;
+    private LocalTime eventTime;
     @NotNull private boolean beginning;
 
     // Foreign Keys

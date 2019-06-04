@@ -17,11 +17,11 @@ import lombok.Setter;
 public class EmployeeAbsentDto
 {
     @Id
-    @NotNull private long id;
+    @NotNull private Long id;
 
     @NotNull private String typeOfAbsent;
     @NotNull private LocalDate absentStartDate;
-    @NotNull private int absentDurationInDays;
+    @NotNull private Integer absentDurationInDays;
 
     // Foreign Keys
 

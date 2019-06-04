@@ -15,4 +15,5 @@ public interface EmploymentContractDao extends CrudRepository<EmploymentContract
 
     @Override
     Set<EmploymentContract> findAll(Iterable<Long> IDs);
+
 }

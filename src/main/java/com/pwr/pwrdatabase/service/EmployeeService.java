@@ -41,6 +41,12 @@ public class EmployeeService
         checkIfAndThrowException(EMPLOYEE.getEmploymentContract() == null,
                                  "Invalid employee. Invalid Employment Contract (null)");
 
+        Set<Employee> employeeSet = repository.findAll();
+        for (Employee e : employeeSet)
+        {
+            checkIfAndThrowException(e.equals(EMPLOYEE), "Employee already exist in database.");
+        }
+
         checkIfAndThrowException(EMPLOYEE.getDepartments().size() == 0, "Invalid employee. Departments size 0");
 
         checkIfAndThrowException(EMPLOYEE.getFirstName().chars().allMatch(Character::isLetter) == false
@@ -49,8 +55,7 @@ public class EmployeeService
 
         if (repository.findOne(EMPLOYEE.getId()) == null)
         {
-            checkIfAndThrowException(EMPLOYEE.getHireDate().isEqual(LocalDate.now()) == false,
-                                     "Invalid employee. Hire date can not be diffrent than " + LocalDate.now());
+            EMPLOYEE.setHireDate(LocalDate.now());
         }
 
         checkIfAndThrowException(EMPLOYEE.getPhoneNumber().matches("^[0-9]*$") == false

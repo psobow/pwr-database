@@ -42,6 +42,7 @@ public class WorkEventController
         SERVICE.delete(ID);
     }
 
+    //  (consumes = "application/x-www-form-urlencoded")
     @PostMapping
     public void createEvent(@Valid @RequestBody final WorkStartFinishEventDto EVENT_DTO)
     {

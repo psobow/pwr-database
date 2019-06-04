@@ -19,11 +19,11 @@ import lombok.Setter;
 public class WorkStartFinishEventDto
 {
     @Id
-    @NotNull private long id;
+    @NotNull private Long id;
 
     @NotNull private LocalDate eventDate;
     @NotNull private LocalTime eventTime;
-    @NotNull private boolean beginning;
+    @NotNull private Boolean beginning;
 
     // Foreign Keys
 

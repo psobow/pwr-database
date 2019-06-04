@@ -34,6 +34,14 @@ public class DepartmentService
     public Department save(final Department DEPARTMENT)
     {
         checkIfAndThrowException(DEPARTMENT == null, "Department is null.");
+
+        Set<Department> departments = repository.findAll();
+        for (Department d : departments)
+        {
+            checkIfAndThrowException(d.equals(DEPARTMENT), "Department already exist in database.");
+        }
+
+
         checkIfAndThrowException(DEPARTMENT.getZipCode().matches("^[0-9]{2}(?:-[0-9]{3})?$") == false,
                                  "Invalid department. Invalid zip-code.");
         return repository.save(DEPARTMENT);

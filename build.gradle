@@ -42,4 +42,6 @@ dependencies {
 
     // https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
+
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.4")
 }

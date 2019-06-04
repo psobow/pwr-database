@@ -50,7 +50,7 @@ public class ContractController
     }
 
     @PostMapping
-    public void createEmployee(@Valid @RequestBody final EmploymentContractDto CONTRACT_DTO)
+    public void createContract(@Valid @RequestBody final EmploymentContractDto CONTRACT_DTO)
     {
         SERVICE.save(MAPPER.mapToContract(CONTRACT_DTO));
     }

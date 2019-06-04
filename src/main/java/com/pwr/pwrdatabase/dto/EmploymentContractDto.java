@@ -20,10 +20,10 @@ import lombok.Setter;
 public class EmploymentContractDto
 {
     @Id
-    @NotNull private long id;
+    @NotNull private Long id;
 
     @NotNull private String employmentType;
-    @NotNull private double hourPay;
+    @NotNull private Double hourPay;
     @NotNull private LocalTime shiftBegin;
     @NotNull private LocalTime shiftEnd;
     //@NotNull private int quantityOfFullWorkDaysForOneHoliday;

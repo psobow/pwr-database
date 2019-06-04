@@ -19,13 +19,13 @@ import lombok.Setter;
 public class DailyEmployeeReportDto
 {
     @Id
-    @NotNull private long id;
+    @NotNull private Long id;
 
     @NotNull private LocalDate reportDate;
     @NotNull private LocalTime workTime;
-    @NotNull private double earnedCash;
-    @NotNull private boolean lateness;
-    private int latenessMinutes;
+    @NotNull private Double earnedCash;
+    @NotNull private Boolean lateness;
+    private Integer latenessMinutes;
 
     // Foreign Keys
 

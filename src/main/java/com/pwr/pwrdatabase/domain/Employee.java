@@ -33,7 +33,7 @@ import org.hibernate.annotations.LazyCollectionOption;
         "phoneNumber",
         "hireDate",
         //"currentHolidays",
-        "active",
+        //"active",
         "employmentContract",
         "workStartFinishEvents",
         "dailyEmployeeReports",
@@ -57,7 +57,7 @@ public class Employee
     @NotNull private String phoneNumber;
     @NotNull private LocalDate hireDate;
     //@NotNull private int currentHolidays;
-    @NotNull private boolean active = true;
+    //@NotNull private boolean active = true;
 
     // Foreign Keys
 

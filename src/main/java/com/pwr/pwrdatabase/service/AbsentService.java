@@ -38,6 +38,16 @@ public class AbsentService
         checkIfAndThrowException(ABSENT == null, "Absent is null.");
         checkIfAndThrowException(ABSENT.getEmployee() == null, "Invalid absent. Can not persist Absent without Employee.");
 
+        Set<EmployeeAbsent> absents = repository.findAllByEmployee(ABSENT.getEmployee());
+
+        for (EmployeeAbsent a : absents)
+        {
+            checkIfAndThrowException(LocalDate.now().isAfter(a.getAbsentStartDate())
+                                             && LocalDate.now().isBefore(a.getAbsentStartDate().plusDays(a.getAbsentDurationInDays())),
+                                     "Can not persist Two absents in the same time.");
+        }
+
+
         checkIfAndThrowException(ABSENT.getAbsentStartDate().isBefore(LocalDate.now()),
                                  "Invalid absent. Can not persist Absent with start date before " + LocalDate.now().toString());
 
