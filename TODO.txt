@@ -49,3 +49,5 @@ TODO: przemyśleć //@NotNull private int currentHolidays; w klasie Employee i f
 TODO: w jaki sposób efektywnie zapobiec utrwalaniu duplikatów w bazie danych? narazie w kazdym serwisie w metodzie save pobieram wszystkich wpisy z bazy i porównuje nowy wpis z tymi które są.
 
 Wszystkie pola w DTO powinny być obiektowe!! po to zeby się nie zastanawiać czy przyszło zero, czy nie przyszło nic i samo sie ustawiło na zero
+
+ID w DTO nie powinny być obiektowe !

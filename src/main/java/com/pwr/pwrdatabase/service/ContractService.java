@@ -37,10 +37,13 @@ public class ContractService
 
         checkIfAndThrowException(CONTRACT == null, "Contract is null.");
 
-        Set<EmploymentContract> contractSet = repository.findAll();
-        for (EmploymentContract e : contractSet)
+        if (repository.findOne(CONTRACT.getId()) == null)
         {
-            checkIfAndThrowException(e.equals(CONTRACT), "CONTRACT already exist in database.");
+            Set<EmploymentContract> contractSet = repository.findAll();
+            for (EmploymentContract e : contractSet)
+            {
+                checkIfAndThrowException(e.equals(CONTRACT), "CONTRACT already exist in database.");
+            }
         }
         checkIfAndThrowException(CONTRACT.getHourPay() < MINIMAL_HOUR_PAY, "Invalid contract. Hour pay is to low.");
 

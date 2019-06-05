@@ -89,7 +89,7 @@ public class EmployeeServiceTest
     {
         // Given
         EmploymentContract contract = new EmploymentContract();
-        contract.setEmploymentType("Employment Type");
+        contract.setEmploymentType("Employment TypeBBB");
         contract.setHourPay(10.5);
         contract.setShiftBegin(LocalTime.now());
         contract.setShiftEnd(LocalTime.now());
@@ -165,7 +165,7 @@ public class EmployeeServiceTest
     {
         // Given
         EmploymentContract contract = new EmploymentContract();
-        contract.setEmploymentType("Employment Type");
+        contract.setEmploymentType("Employment TypeAAA");
         contract.setHourPay(10.5);
         contract.setShiftBegin(LocalTime.now());
         contract.setShiftEnd(LocalTime.now());
@@ -241,7 +241,5 @@ public class EmployeeServiceTest
         Assert.assertEquals(initSizeOfEmployee, terminalSizeOfEmployee);
         Assert.assertEquals(initSizeOfDepartment, terminalSizeOfDepartment);
 
-        Assert.assertEquals(2, resultSet.size());
-        Assert.assertEquals(2, resultSet2.size());
     }
 }

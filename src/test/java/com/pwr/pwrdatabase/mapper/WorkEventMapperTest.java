@@ -76,7 +76,7 @@ public class WorkEventMapperTest
                                                                   .getSimpleName());
 
         Assert.assertEquals("WorkStartFinishEventDto", mappedEvent.getClass().getSimpleName());
-        Assert.assertEquals(event.getId(), mappedEvent.getId());
+        Assert.assertEquals((long) event.getId(), (long) mappedEvent.getId());
 
         Assert.assertEquals("WorkStartFinishEvent", mappedBackEvent.getClass().getSimpleName());
         Assert.assertEquals(event.getId(), mappedBackEvent.getId());

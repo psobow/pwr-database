@@ -1,7 +1,5 @@
 package com.pwr.pwrdatabase.mapper;
 
-import static org.junit.Assert.*;
-
 import com.pwr.pwrdatabase.domain.Department;
 import com.pwr.pwrdatabase.dto.DepartmentDto;
 import java.util.HashSet;
@@ -51,7 +49,7 @@ public class DepartmentMapperTest
                                                              .getSimpleName());
 
         Assert.assertEquals("DepartmentDto", mappedToDTO.getClass().getSimpleName());
-        Assert.assertEquals(department.getId(), mappedToDTO.getId());
+        Assert.assertEquals((long)department.getId(), (long)mappedToDTO.getId());
 
         Assert.assertEquals("Department", mappedBack.getClass().getSimpleName());
         Assert.assertEquals(department.getId(), mappedBack.getId());

@@ -81,7 +81,7 @@ public class ReportMapperTest
                                                              .getSimpleName());
 
         Assert.assertEquals("DailyEmployeeReportDto", mappedObject.getClass().getSimpleName());
-        Assert.assertEquals(report.getId(), mappedObject.getId());
+        Assert.assertEquals((long) report.getId(), (long) mappedObject.getId());
 
         Assert.assertEquals("DailyEmployeeReport", mappedBackObject.getClass().getSimpleName());
         Assert.assertEquals(report.getId(), mappedBackObject.getId());

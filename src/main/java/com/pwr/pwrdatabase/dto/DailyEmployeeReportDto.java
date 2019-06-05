@@ -19,7 +19,7 @@ import lombok.Setter;
 public class DailyEmployeeReportDto
 {
     @Id
-    @NotNull private Long id;
+    private long id;
 
     @NotNull private LocalDate reportDate;
     @NotNull private LocalTime workTime;

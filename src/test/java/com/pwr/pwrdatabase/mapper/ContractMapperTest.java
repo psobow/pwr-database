@@ -35,7 +35,7 @@ public class ContractMapperTest
 
         // Then
         Assert.assertEquals("EmploymentContractDto", mappedToDTO.getClass().getSimpleName());
-        Assert.assertEquals(contract.getId(), mappedToDTO.getId());
+        Assert.assertEquals((long) contract.getId(), (long)mappedToDTO.getId());
 
         Assert.assertEquals("EmploymentContract", mappedBack.getClass().getSimpleName());
         Assert.assertEquals(contract.getId(), mappedBack.getId());

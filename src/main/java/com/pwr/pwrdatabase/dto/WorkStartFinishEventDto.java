@@ -19,7 +19,7 @@ import lombok.Setter;
 public class WorkStartFinishEventDto
 {
     @Id
-    @NotNull private Long id;
+    private long id;
 
     @NotNull private LocalDate eventDate;
     @NotNull private LocalTime eventTime;

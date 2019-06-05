@@ -20,7 +20,7 @@ import lombok.Setter;
 public class EmploymentContractDto
 {
     @Id
-    @NotNull private Long id;
+    private long id;
 
     @NotNull private String employmentType;
     @NotNull private Double hourPay;

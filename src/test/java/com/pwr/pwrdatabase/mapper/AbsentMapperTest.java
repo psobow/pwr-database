@@ -77,7 +77,7 @@ public class AbsentMapperTest
                                                                   .getSimpleName());
 
         Assert.assertEquals("EmployeeAbsentDto", mappedToDTO.getClass().getSimpleName());
-        Assert.assertEquals(employeeAbsent.getId(), mappedToDTO.getId());
+        Assert.assertEquals((long) employeeAbsent.getId(), (long) mappedToDTO.getId());
 
         Assert.assertEquals("EmployeeAbsent", mappedBack.getClass().getSimpleName());
         Assert.assertEquals(employeeAbsent.getId(), mappedBack.getId());

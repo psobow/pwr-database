@@ -17,7 +17,7 @@ import lombok.Setter;
 public class EmployeeAbsentDto
 {
     @Id
-    @NotNull private Long id;
+    private long id;
 
     @NotNull private String typeOfAbsent;
     @NotNull private LocalDate absentStartDate;

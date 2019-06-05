@@ -148,7 +148,7 @@ public class DepartmentTest
         department.getEmployees().add(employee);
 
         // When
-        employmentContractDao.save(contract);
+        //employmentContractDao.save(contract);
 
         employeeDao.save(employee); // this should be persisted last
         departmentDao.save(department);

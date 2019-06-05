@@ -35,10 +35,13 @@ public class DepartmentService
     {
         checkIfAndThrowException(DEPARTMENT == null, "Department is null.");
 
-        Set<Department> departments = repository.findAll();
-        for (Department d : departments)
+        if (repository.findOne(DEPARTMENT.getId()) == null)
         {
-            checkIfAndThrowException(d.equals(DEPARTMENT), "Department already exist in database.");
+            Set<Department> departments = repository.findAll();
+            for (Department d : departments)
+            {
+                checkIfAndThrowException(d.equals(DEPARTMENT), "Department already exist in database.");
+            }
         }
 
 

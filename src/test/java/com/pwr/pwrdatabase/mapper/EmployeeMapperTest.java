@@ -74,7 +74,7 @@ public class EmployeeMapperTest
                                                              .getSimpleName());
 
         Assert.assertEquals("EmployeeDto", mappedToDTO.getClass().getSimpleName());
-        Assert.assertEquals(employee.getId(), mappedToDTO.getId());
+        Assert.assertEquals((long) employee.getId(), (long) mappedToDTO.getId());
 
         Assert.assertEquals("Employee", mappedBack.getClass().getSimpleName());
         Assert.assertEquals(employee.getId(), mappedBack.getId());

@@ -30,7 +30,7 @@ import lombok.Setter;
 public class EmployeeDto
 {
     @Id
-    @NotNull private Long id;
+    private long id;
 
     @NotNull private String firstName;
     @NotNull private String secondName;
